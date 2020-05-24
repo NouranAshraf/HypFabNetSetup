@@ -1,0 +1,217 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '2'
+
+services:
+
+  orderer.sqs.com:
+    container_name: orderer.sqs.com
+    extends:
+      file: peer-base.yaml
+      service: orderer-base
+    volumes:
+        - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+        - ../crypto-config/ordererOrganizations/sqs.com/orderers/orderer.sqs.com/msp:/var/hyperledger/orderer/msp
+        - ../crypto-config/ordererOrganizations/sqs.com/orderers/orderer.sqs.com/tls/:/var/hyperledger/orderer/tls
+        - orderer.sqs.com:/var/hyperledger/production/orderer
+    ports:
+      - 7050:7050
+
+  peer0.Sales.sqs.com:
+    container_name: peer0.Sales.sqs.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.Sales.sqs.com
+      - CORE_PEER_ADDRESS=peer0.Sales.sqs.com:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.Sales.sqs.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.Sales.sqs.com:8051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.Sales.sqs.com:7051
+      - CORE_PEER_LOCALMSPID=SalesMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/Sales.sqs.com/peers/peer0.Sales.sqs.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/Sales.sqs.com/peers/peer0.Sales.sqs.com/tls:/etc/hyperledger/fabric/tls
+        - peer0.Sales.sqs.com:/var/hyperledger/production
+    ports:
+      - 7051:7051
+      - 7052:7052
+      - 7053:7051
+      
+
+  peer1.Sales.sqs.com:
+    container_name: peer1.Sales.sqs.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.Sales.sqs.com
+      - CORE_PEER_ADDRESS=peer1.Sales.sqs.com:8051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.Sales.sqs.com:8052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.Sales.sqs.com:8051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.Sales.sqs.com:7051
+      - CORE_PEER_LOCALMSPID=SalesMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/Sales.sqs.com/peers/peer1.Sales.sqs.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/Sales.sqs.com/peers/peer1.Sales.sqs.com/tls:/etc/hyperledger/fabric/tls
+        - peer1.Sales.sqs.com:/var/hyperledger/production
+
+    ports:
+      - 8051:8051
+      - 8052:8052
+      - 8053:8051
+      
+
+  peer0.Resourcing.sqs.com:
+    container_name: peer0.Resourcing.sqs.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.Resourcing.sqs.com
+      - CORE_PEER_ADDRESS=peer0.Resourcing.sqs.com:9051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.Resourcing.sqs.com:9052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.Resourcing.sqs.com:9051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.Resourcing.sqs.com:10051
+      - CORE_PEER_LOCALMSPID=ResourcingMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/Resourcing.sqs.com/peers/peer0.Resourcing.sqs.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/Resourcing.sqs.com/peers/peer0.Resourcing.sqs.com/tls:/etc/hyperledger/fabric/tls
+        - peer0.Resourcing.sqs.com:/var/hyperledger/production
+    ports:
+      - 9051:9051
+      - 9052:9052
+      - 9053:9051
+
+  peer1.Resourcing.sqs.com:
+    container_name: peer1.Resourcing.sqs.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.Resourcing.sqs.com
+      - CORE_PEER_ADDRESS=peer1.Resourcing.sqs.com:10051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:10051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.Resourcing.sqs.com:10052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:10052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.Resourcing.sqs.com:10051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.Resourcing.sqs.com:9051
+      - CORE_PEER_LOCALMSPID=ResourcingMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/Resourcing.sqs.com/peers/peer1.Resourcing.sqs.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/Resourcing.sqs.com/peers/peer1.Resourcing.sqs.com/tls:/etc/hyperledger/fabric/tls
+        - peer1.Resourcing.sqs.com:/var/hyperledger/production
+    ports:
+      - 10051:10051
+      - 10052:10052
+      - 10053:10051
+
+  peer0.EngagementManagement.sqs.com:
+    container_name: peer0.EngagementManagement.sqs.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.EngagementManagement.sqs.com
+      - CORE_PEER_ADDRESS=peer0.EngagementManagement.sqs.com:11051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:11051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.EngagementManagement.sqs.com:11052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:11052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.EngagementManagement.sqs.com:11051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.EngagementManagement.sqs.com:12051
+      - CORE_PEER_LOCALMSPID=EngagementManagementMSP                        
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/EngagementManagement.sqs.com/peers/peer0.EngagementManagement.sqs.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/EngagementManagement.sqs.com/peers/peer0.EngagementManagement.sqs.com/tls:/etc/hyperledger/fabric/tls
+        - peer0.EngagementManagement.sqs.com:/var/hyperledger/production
+    ports:
+      - 11051:11051
+      - 11052:11052
+      - 11053:11051
+      
+
+  peer1.EngagementManagement.sqs.com:
+    container_name: peer1.EngagementManagement.sqs.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.EngagementManagement.sqs.com
+      - CORE_PEER_ADDRESS=peer1.EngagementManagement.sqs.com:12051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:12051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.EngagementManagement.sqs.com:12052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:12052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.EngagementManagement.sqs.com:12051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.EngagementManagement.sqs.com:11051
+      - CORE_PEER_LOCALMSPID=EngagementManagementMSP              
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/EngagementManagement.sqs.com/peers/peer1.EngagementManagement.sqs.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/EngagementManagement.sqs.com/peers/peer1.EngagementManagement.sqs.com/tls:/etc/hyperledger/fabric/tls
+        - peer1.EngagementManagement.sqs.com:/var/hyperledger/production
+    ports:
+      - 12051:12051
+      - 12052:12052
+      - 12053:12051
+      
+  peer0.Client.sqs.com:
+    container_name: peer0.Client.sqs.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.Client.sqs.com
+      - CORE_PEER_ADDRESS=peer0.Client.sqs.com:13051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:13051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.Client.sqs.com:13052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:13052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.Client.sqs.com:13051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.Client.sqs.com:14051
+      - CORE_PEER_LOCALMSPID=ClientMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/Client.sqs.com/peers/peer0.Client.sqs.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/Client.sqs.com/peers/peer0.Client.sqs.com/tls:/etc/hyperledger/fabric/tls
+        - peer0.Client.sqs.com:/var/hyperledger/production
+    ports:
+      - 13051:13051
+      - 13052:13052
+      - 13053:13051
+
+  peer1.Client.sqs.com:
+    container_name: peer1.Client.sqs.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.Client.sqs.com
+      - CORE_PEER_ADDRESS=peer1.Client.sqs.com:14051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:14051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.Client.sqs.com:14052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:14052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.Client.sqs.com:14051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.Client.sqs.com:13051
+      - CORE_PEER_LOCALMSPID=ClientMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/Client.sqs.com/peers/peer1.Client.sqs.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/Client.sqs.com/peers/peer1.Client.sqs.com/tls:/etc/hyperledger/fabric/tls
+        - peer1.Client.sqs.com:/var/hyperledger/production
+    ports:
+      - 14051:14051
+      - 14052:14052
+      - 14053:14051

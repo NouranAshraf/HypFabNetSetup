@@ -1,0 +1,138 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '2'
+
+volumes:
+  orderer.sqs.com:
+
+  peer0.Sales.sqs.com:
+  peer1.Sales.sqs.com:
+
+  peer0.Resourcing.sqs.com:
+  peer1.Resourcing.sqs.com:
+
+  peer0.EngagementManagement.sqs.com:
+  peer1.EngagementManagement.sqs.com:
+
+  peer0.Client.sqs.com:
+  peer1.Client.sqs.com:
+
+networks:
+  sqsnetwork:
+
+services:
+
+  orderer.sqs.com:
+    extends:
+      file:   base/docker-compose-base.yaml
+      service: orderer.sqs.com
+    container_name: orderer.sqs.com
+    networks:
+      - sqsnetwork
+
+  peer0.Sales.sqs.com:
+    container_name: peer0.Sales.sqs.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.Sales.sqs.com
+    networks:
+      - sqsnetwork
+
+  peer1.Sales.sqs.com:
+    container_name: peer1.Sales.sqs.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.Sales.sqs.com
+    networks:
+      - sqsnetwork
+
+  peer0.Resourcing.sqs.com:
+    container_name: peer0.Resourcing.sqs.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.Resourcing.sqs.com
+    networks:
+      - sqsnetwork
+
+  peer1.Resourcing.sqs.com:
+    container_name: peer1.Resourcing.sqs.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.Resourcing.sqs.com
+    networks:
+      - sqsnetwork
+
+  peer0.EngagementManagement.sqs.com:
+    container_name: peer0.EngagementManagement.sqs.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.EngagementManagement.sqs.com
+    networks:
+      - sqsnetwork
+
+  peer1.EngagementManagement.sqs.com:
+    container_name: peer1.EngagementManagement.sqs.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.EngagementManagement.sqs.com
+    networks:
+      - sqsnetwork
+
+  peer0.Client.sqs.com:
+    container_name: peer0.Client.sqs.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.Client.sqs.com
+    networks:
+      - sqsnetwork
+
+  peer1.Client.sqs.com:
+    container_name: peer1.Client.sqs.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.Client.sqs.com
+    networks:
+      - sqsnetwork
+
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools:$IMAGE_TAG
+    tty: true
+    stdin_open: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=cli
+      - CORE_PEER_ADDRESS=peer0.Sales.sqs.com:7051
+      - CORE_PEER_LOCALMSPID=SalesMSP
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Sales.sqs.com/peers/peer0.Sales.sqs.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Sales.sqs.com/peers/peer0.Sales.sqs.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Sales.sqs.com/peers/peer0.Sales.sqs.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Sales.sqs.com/users/Admin@Sales.sqs.com/msp
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./../chaincode/:/opt/gopath/src/github.com/hyperledger/fabric-samples/chaincode
+        - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+        - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+        - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+    depends_on:
+      - orderer.sqs.com
+      - peer0.Sales.sqs.com
+      - peer1.Sales.sqs.com
+      - peer0.Resourcing.sqs.com
+      - peer1.Resourcing.sqs.com
+      - peer0.EngagementManagement.sqs.com
+      - peer1.EngagementManagement.sqs.com
+      - peer0.Client.sqs.com
+      - peer1.Client.sqs.com
+      
+    networks:
+      - sqsnetwork

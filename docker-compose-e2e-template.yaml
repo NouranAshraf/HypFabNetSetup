@@ -1,0 +1,167 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '2'
+
+volumes:
+  orderer.sqs.com:
+  peer0.Sales.sqs.com:
+  peer1.Sales.sqs.com:
+  peer0.Resourcing.sqs.com:
+  peer1.Resourcing.sqs.com:
+  peer0.EngagementManagement.sqs.com:
+  peer1.EngagementManagement.sqs.com:
+  peer0.Client.sqs.com:
+  peer1.Client.sqs.com:
+
+networks:
+  sqsnetwork:
+services:
+  ca0:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-Sales
+      - FABRIC_CA_SERVER_CA_KEYFILE=./crypto-config/peerOrganizations/Sales.sqs.com/ca/priv_sk
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.Sales.sqs.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/${sqsnetwork_CA1_PRIVATE_KEY}
+      - FABRIC_CA_SERVER_PORT=7054
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.Sales.sqs.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/${sqsnetwork_CA1_PRIVATE_KEY} -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/Sales.sqs.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerSales
+    networks:
+      - sqsnetwork
+
+  ca1:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-Resourcing
+      - FABRIC_CA_SERVER_CA_KEYFILE=./crypto-config/peerOrganizations/Resourcing.sqs.com/ca/priv_sk
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.Resourcing.sqs.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/${sqsnetwork_CA2_PRIVATE_KEY}
+      - FABRIC_CA_SERVER_PORT=8054
+    ports:
+      - "8054:8054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.Resourcing.sqs.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/${sqsnetwork_CA2_PRIVATE_KEY} -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/Resourcing.sqs.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerResourcing
+    networks:
+      - sqsnetwork
+
+  ca2:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-EngagementManagement
+      - FABRIC_CA_SERVER_CA_KEYFILE=./crypto-config/peerOrganizations/EngagementManagement.sqs.com/ca/priv_sk
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.EngagementManagement.sqs.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/${sqsnetwork_CA3_PRIVATE_KEY}
+      - FABRIC_CA_SERVER_PORT=9054
+    ports:
+      - "9054:9054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.EngagementManagement.sqs.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/${sqsnetwork_CA3_PRIVATE_KEY} -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/EngagementManagement.sqs.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerEngagementManagement
+    networks:
+      - sqsnetwork       
+
+  ca3:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-Client
+      - FABRIC_CA_SERVER_CA_KEYFILE=./crypto-config/peerOrganizations/Client.sqs.com/ca/priv_sk
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.Client.sqs.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/${sqsnetwork_CA4_PRIVATE_KEY}
+      - FABRIC_CA_SERVER_PORT=10054
+    ports:
+      - "10054:10054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.Client.sqs.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/${sqsnetwork_CA4_PRIVATE_KEY} -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/Client.sqs.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerClient
+    networks:
+      - sqsnetwork   
+  orderer.sqs.com:
+    extends:
+      file:   base/docker-compose-base.yaml
+      service: orderer.sqs.com
+    container_name: orderer.sqs.com
+    networks:
+      - sqsnetwork
+
+  peer0.Sales.sqs.com:
+    container_name: peer0.Sales.sqs.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.Sales.sqs.com
+    networks:
+      - sqsnetwork
+
+  peer1.Sales.sqs.com:
+    container_name: peer1.Sales.sqs.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.Sales.sqs.com
+    networks:
+      - sqsnetwork
+
+  peer0.Resourcing.sqs.com:
+    container_name: peer0.Resourcing.sqs.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.Resourcing.sqs.com
+    networks:
+      - sqsnetwork
+
+  peer1.Resourcing.sqs.com:
+    container_name: peer1.Resourcing.sqs.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.Resourcing.sqs.com
+    networks:
+      - sqsnetwork
+
+  peer0.EngagementManagement.sqs.com:
+    container_name: peer0.EngagementManagement.sqs.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.EngagementManagement.sqs.com
+    networks:
+      - sqsnetwork
+
+  peer1.EngagementManagement.sqs.com:
+    container_name: peer1.EngagementManagement.sqs.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.EngagementManagement.sqs.com
+    networks:
+      - sqsnetwork
+
+  peer0.Client.sqs.com:
+    container_name: peer0.Client.sqs.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.Client.sqs.com
+    networks:
+      - sqsnetwork
+
+  peer1.Client.sqs.com:
+    container_name: peer1.Client.sqs.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.Client.sqs.com
+    networks:
+      - sqsnetwork
