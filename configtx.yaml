@@ -471,7 +471,7 @@ Channel: &ChannelDefaults
 Profiles:
 
     S&CChannel:
-        Consortium: TestConsortium
+        Consortium: S&CConsortium
         Application:
             <<: *ApplicationDefaults
             Organizations:
@@ -479,7 +479,7 @@ Profiles:
             - *Client
 
     MainChannel:
-        Consortium: SampleConsortium
+        Consortium: MainConsortium
         <<: *ChannelDefaults
         Application:
             <<: *ApplicationDefaults
@@ -487,18 +487,25 @@ Profiles:
                 - *Sales
                 - *Resourcing
                 - *EngagementManagement
-                - *Client
             Capabilities:
                 <<: *ApplicationCapabilities    
                 
                                  
     S&EChannel:
-        Consortium: SampleConsortium
+        Consortium: S&EConsortium
         Application:
             <<: *ApplicationDefaults
             Organizations:
                 - *Sales
                 - *EngagementManagement
+
+    S&RChannel:
+        Consortium: S&RConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Sales
+                - *Resourcing
                 
               
     GenesisBlock:

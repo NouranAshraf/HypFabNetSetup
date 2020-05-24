@@ -12,7 +12,7 @@ export FABRIC_CFG_PATH=$PWD
 
 ../bin/configtxgen -profile MainChannel -outputAnchorPeersUpdate ./channel-artifacts/EngagementManagementMSPanchors.tx -channelID mainchannel -asOrg EngagementManagementMSP
 
-../bin/configtxgen -profile MainChannel -outputAnchorPeersUpdate ./channel-artifacts/ClientMSPanchors.tx -channelID mainchannel -asOrg ClientMSP
+#../bin/configtxgen -profile MainChannel -outputAnchorPeersUpdate ./channel-artifacts/ClientMSPanchors.tx -channelID mainchannel -asOrg ClientMSP
 
 export IMAGE_TAG=latest
 
