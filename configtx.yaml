@@ -80,6 +80,10 @@ Organizations:
             Admins:
                 Type: Signature
                 Rule: "OR('SalesMSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('SalesMSP.peer')"
+                                
 
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
@@ -117,6 +121,10 @@ Organizations:
             Admins:
                 Type: Signature
                 Rule: "OR('ResourcingMSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('ResourcingMSP.peer')"
+                
 
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
@@ -154,6 +162,10 @@ Organizations:
             Admins:
                 Type: Signature
                 Rule: "OR('EngagementManagementMSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('EngagementManagementMSP.peer')"
+                                
 
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
@@ -191,6 +203,10 @@ Organizations:
             Admins:
                 Type: Signature
                 Rule: "OR('ClientMSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('ClientMSP.peer')"
+                
 
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used

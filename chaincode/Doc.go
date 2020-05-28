@@ -42,20 +42,20 @@ func (t *SampleChaincode) Init(stub shim.ChainCodeStubInterface) peer.Response {
 
 // Get the args from the transaction proposal
 
-       args := stub.GetStringArgs()
+    args := stub.GetStringArgs()
 
-       if len(args) != 2 {
+    if len(args) != 2 {
 
-                return shim.Error("Incorrect arguments. Expecting a key and a value")
+       return shim.Error("Incorrect arguments. Expecting a key and a value")
 }
 
 // We store the key and the value on the ledger
 
-       err := stub.PutState(args[0], []byte(args[1]))
+    err := stub.PutState(args[0], []byte(args[1]))
 
-       if err != nil {
+    if err != nil {
 
-               return shim.Error(fmt.Sprintf("Failed to create asset: %s", args[0]))
+       return shim.Error(fmt.Sprintf("Failed to create asset: %s", args[0]))
 
 }
 
