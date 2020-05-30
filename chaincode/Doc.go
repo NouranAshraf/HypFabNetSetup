@@ -1,11 +1,16 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"strconv"
-
+	"strings"
+	"time"
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
+	"github.com/hyperledger/fabric-chaincode-go/shim"
+	pb "github.com/hyperledger/fabric-protos-go/peer"
+
 )
 
 // Chaincode provides functions for managing a Doc
@@ -15,93 +20,63 @@ type Chaincode struct {
 
 //describes basic details of what makes up a doc
 type Doc struct {
-	Name   string `json:"name"`
-	Doctype   string `json:"doctype"`
+	Name     string `json:"name"`
+	Doctype  string `json:"doctype"`
 	Sender   string `json:"sender"`
-	Receiver   string `json:"receiver"`
-	Date   string `json:"date"`
-	Time   string `json:"time"`
-	Msg   string `json:"msg"`
+	Receiver string `json:"receiver"`
+	Date     string `json:"date"`
+	Time     string `json:"time"`
+	Msg      string `json:"msg"`
 }
 
 func main() {
-
-	chaincode, err := contractapi.NewChaincode(new(Chaincode))
-
+	err := shim.Start(new(Chaincode))
 	if err != nil {
-		fmt.Printf("Error create fabDocchaincode: %s", err.Error())
-		return
-	}
-
-	if err := chaincode.Start(); err != nil {
-		fmt.Printf("Error starting fabDoc chaincode: %s", err.Error())
+		fmt.Printf("Error starting chaincode: %s", err)
 	}
 }
 
-func (t *SampleChaincode) Init(stub shim.ChainCodeStubInterface) peer.Response {
+func (t *Chaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 
-// Get the args from the transaction proposal
-
-    args := stub.GetStringArgs()
-
-    if len(args) != 2 {
-
-       return shim.Error("Incorrect arguments. Expecting a key and a value")
+    return shim.Success(nil)
 }
 
-// We store the key and the value on the ledger
-
-    err := stub.PutState(args[0], []byte(args[1]))
-
-    if err != nil {
-
-       return shim.Error(fmt.Sprintf("Failed to create asset: %s", args[0]))
-
-}
-
-       return shim.Success(nil)
-
-}
-
-func (t *SampleChaincode) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
+func (t *Chaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 
 // Extract the function and args from the transaction proposal
+    function, args := stub.GetFunctionAndParameters()
+	fmt.Println("invoke is running " + function)
 
-      function, args := stub.GetFunctionAndParameters()
-	switch function {
 	//Initializes a new Doc
-	case "InitDoc":
-		return write(stub, args)  
-	//Delete from world state	
-	case "DeleteDoc":
-		return read(stub, args)
-	//Search Docs using a docname	
-	case "QueryDocByName":
-		return read(stub, args)		
-	// Search all Docs using any value	
-	case "QueryAllDocByValue":
-		return read(stub, args)
+	if function == "InitDoc" { 
+		return t.InitDoc(stub, args)
+    //Delete from world state	
+	} else if function == "DeleteDoc" { 
+		return t.DeleteDoc(stub, args)
+	//Search Docs using a docname
+	} else if function == "QueryDocByName" { 
+		return t.QueryDocByName(stub, args)
 	//Adds a msg 	
-	case "AddStateMsg":
-		return read(stub, args)	
-	//Retrieves all prev values for a doc 	
-	case "DocValueHistory":
-		return read(stub, args)		
-	//Retrieves  a range of docs
-	case "GetDocsByRange":
-		return read(stub, args)		
-		
-							
-// Failed to get function and/or arguments from transaction proposal  
- 		
-	default:
-		return shim.Error("unknown function")
-       }
+//	} else if function == "AddStateMsg" { 
+//		return t.AddStateMsg(stub, args)
+	//Retrieves all prev values for a doc	
+	} else if function == "DocValueHistory" { 
+		return t.DocValueHistory(stub, args)
+	//Retrieves  a range of docs	
+	} else if function == "GetDocsByRange" { 
+		return t.GetDocsByRange(stub, args)
+	// Search all Docs using any value	
+    } else if function == "QueryAllDocByValue" { 
+		return t.QueryAllDocByValue(stub, args)
+	}
+
+	fmt.Println("invoke did not find func: " + function)
+	return shim.Error("Received unknown function invocation")	
 
 }
 
 // initDoc - create a new Doc, store into chaincode state
-func (t *SimpleChaincode) InitDoc(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+func (t *Chaincode) InitDoc(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 
 	var err error
 
@@ -162,17 +137,20 @@ func (t *SimpleChaincode) InitDoc(stub shim.ChaincodeStubInterface, args []strin
 	}
 
 	// === Save Doc to state ===
-	err = stub.PutState(docName, DocJSONasBytes)
+	err = stub.PutState(DocName, DocJSONasBytes)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
+	fmt.Println("- end init marble")
+	return shim.Success(nil)
 }
 
 
 // delete - remove a doc key/value pair from state
-func (t *SimpleChaincode) DeleteDoc(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	var jsonResp string
-	var DocJSON Doc
+func (t *Chaincode) DeleteDoc(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+//	var jsonResp string
+//	var DocJSON Doc
+	var err error
 	if len(args) != 1 {
 		return shim.Error("Incorrect number of arguments. Expecting 1")
 	}
@@ -193,7 +171,7 @@ func (t *SimpleChaincode) DeleteDoc(stub shim.ChaincodeStubInterface, args []str
 // This is an example of a parameterized query where the query logic is baked into the chaincode,
 // and accepting a single query parameter (name).
 // Only available on state databases that support rich query (e.g. CouchDB)
-func (t *SimpleChaincode) QueryDocByName(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+func (t *Chaincode) QueryDocByName(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 
 	//   0
 	// "docname"
@@ -209,7 +187,8 @@ func (t *SimpleChaincode) QueryDocByName(stub shim.ChaincodeStubInterface, args 
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-	return shim.Success(queryResults)
+	
+    return shim.Success(queryResults)
 }
 
 // QueryAllDocByValue uses a query string to perform a query for docs.
@@ -217,7 +196,7 @@ func (t *SimpleChaincode) QueryDocByName(stub shim.ChaincodeStubInterface, args 
 // Supports ad hoc queries that can be defined at runtime by the client.
 // Only available on state databases that support rich query (e.g. CouchDB)
 // =========================================================================================
-func (t *SimpleChaincode) QueryAllDocByValue(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+func (t *Chaincode) QueryAllDocByValue(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 
 	//   0
 	// "queryString"
@@ -234,7 +213,29 @@ func (t *SimpleChaincode) QueryAllDocByValue(stub shim.ChaincodeStubInterface, a
 	return shim.Success(queryResults)
 }
 
-func (t *SimpleChaincode) DocvalueHistory(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+// getQueryResultForQueryString executes the passed in query string.
+func getQueryResultForQueryString(stub shim.ChaincodeStubInterface, queryString string) ([]byte, error) {
+
+	fmt.Printf("- getQueryResultForQueryString queryString:\n%s\n", queryString)
+
+	resultsIterator, err := stub.GetQueryResult(queryString)
+	if err != nil {
+		return nil, err
+	}
+	defer resultsIterator.Close()
+
+	buffer, err := constructQueryResponseFromIterator(resultsIterator)
+	if err != nil {
+		return nil, err
+	}
+
+	fmt.Printf("- getQueryResultForQueryString queryResult:\n%s\n", buffer.String())
+
+	return buffer.Bytes(), nil
+}
+
+
+func (t *Chaincode) DocValueHistory(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 
 	if len(args) < 1 {
 		return shim.Error("Incorrect number of arguments. Expecting 1")
@@ -300,7 +301,7 @@ func (t *SimpleChaincode) DocvalueHistory(stub shim.ChaincodeStubInterface, args
 }
 
 // GetDocsByRange performs a range query based on the start and end keys provided.
-func (t *SimpleChaincode) GetDocsByRange(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+func (t *Chaincode) GetDocsByRange(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 
 	if len(args) < 2 {
 		return shim.Error("Incorrect number of arguments. Expecting 2")
@@ -324,3 +325,37 @@ func (t *SimpleChaincode) GetDocsByRange(stub shim.ChaincodeStubInterface, args 
 
 	return shim.Success(buffer.Bytes())
 }
+
+// constructQueryResponseFromIterator constructs a JSON array containing query results from
+
+func constructQueryResponseFromIterator(resultsIterator shim.StateQueryIteratorInterface) (*bytes.Buffer, error) {
+	// buffer is a JSON array containing QueryResults
+	var buffer bytes.Buffer
+	buffer.WriteString("[")
+
+	bArrayMemberAlreadyWritten := false
+	for resultsIterator.HasNext() {
+		queryResponse, err := resultsIterator.Next()
+		if err != nil {
+			return nil, err
+		}
+		// Add a comma before array members, suppress it for the first array member
+		if bArrayMemberAlreadyWritten == true {
+			buffer.WriteString(",")
+		}
+		buffer.WriteString("{\"Key\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(queryResponse.Key)
+		buffer.WriteString("\"")
+
+		buffer.WriteString(", \"Record\":")
+		// Record is a JSON object, so we write as-is
+		buffer.WriteString(string(queryResponse.Value))
+		buffer.WriteString("}")
+		bArrayMemberAlreadyWritten = true
+	}
+	buffer.WriteString("]")
+
+	return &buffer, nil
+}
+

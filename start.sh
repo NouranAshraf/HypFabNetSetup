@@ -60,40 +60,69 @@ docker ps -a
 #peer lifecycle chaincode package mydoc.tar.gz --path github.com/hyperledger/fabric-samples/chaincode/abstore/go/ --lang golang --label mydoc1
 #peer lifecycle chaincode install mydoc.tar.gz 
 #peer lifecycle chaincode queryinstalled
-#CC_PACKAGE_ID=Package ID: mydoc1:310f668adfa429dd71556502a8e866e6848f438e0a26401a287df59e46df906b
+#CC_PACKAGE_ID=mydoc1:310f668adfa429dd71556502a8e866e6848f438e0a26401a287df59e46df906b
 
 #CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Sales.sqs.com/users/Admin@Sales.sqs.com/msp
-#CORE_PEER_ADDRESS=peer0.Sales.sqs.com:7051
+#CORE_PEER_ADDRESS=peer1.Sales.sqs.com:8051
 #CORE_PEER_LOCALMSPID="SalesMSP"
-#CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Sales.sqs.com/peers/peer0.Sales.sqs.com/tls/ca.crt
+#CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Sales.sqs.com/peers/peer1.Sales.sqs.com/tls/ca.crt
+#peer lifecycle chaincode install mydoc.tar.gz 
+
+#CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Resourcing.sqs.com/users/Admin@Resourcing.sqs.com/msp
+#CORE_PEER_ADDRESS=peer0.Resourcing.sqs.com:9051
+#CORE_PEER_LOCALMSPID="ResourcingMSP"
+#CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Resourcing.sqs.com/peers/peer0.Resourcing.sqs.com/tls/ca.crt
+#peer lifecycle chaincode install mydoc.tar.gz 
 
 #CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Resourcing.sqs.com/users/Admin@Resourcing.sqs.com/msp
 #CORE_PEER_ADDRESS=peer1.Resourcing.sqs.com:10051
 #CORE_PEER_LOCALMSPID="ResourcingMSP"
 #CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Resourcing.sqs.com/peers/peer1.Resourcing.sqs.com/tls/ca.crt
+#peer lifecycle chaincode install mydoc.tar.gz 
+
+#CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/EngagementManagement.sqs.com/users/Admin@EngagementManagement.sqs.com/msp
+#CORE_PEER_ADDRESS=peer0.EngagementManagement.sqs.com:11051
+#CORE_PEER_LOCALMSPID="EngagementManagementMSP"
+#CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/EngagementManagement.sqs.com/peers/peer0.EngagementManagement.sqs.com/tls/ca.crt
+#peer lifecycle chaincode install mydoc.tar.gz 
 
 #CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/EngagementManagement.sqs.com/users/Admin@EngagementManagement.sqs.com/msp
 #CORE_PEER_ADDRESS=peer1.EngagementManagement.sqs.com:12051
 #CORE_PEER_LOCALMSPID="EngagementManagementMSP"
 #CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/EngagementManagement.sqs.com/peers/peer1.EngagementManagement.sqs.com/tls/ca.crt
+#peer lifecycle chaincode install mydoc.tar.gz 
 
 #peer lifecycle chaincode approveformyorg --channelID mainchannel --name mydoc --version 2.0 --init-required --package-id mydoc1:310f668adfa429dd71556502a8e866e6848f438e0a26401a287df59e46df906b --sequence 1 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/sqs.com/orderers/orderer.sqs.com/msp/tlscacerts/tlsca.sqs.com-cert.pem
 
+#CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Sales.sqs.com/users/Admin@Sales.sqs.com/msp
+#CORE_PEER_ADDRESS=peer0.Sales.sqs.com:7051
+#CORE_PEER_LOCALMSPID="SalesMSP"
+#CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Sales.sqs.com/peers/peer0.Sales.sqs.com/tls/ca.crt
 #peer lifecycle chaincode checkcommitreadiness --channelID mainchannel --name mydoc --version 2.0 --init-required --sequence 1 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/sqs.com/orderers/orderer.sqs.com/msp/tlscacerts/tlsca.sqs.com-cert.pem --output json
 
+#CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Resourcing.sqs.com/users/Admin@Resourcing.sqs.com/msp
+#CORE_PEER_ADDRESS=peer0.Resourcing.sqs.com:9051
+#CORE_PEER_LOCALMSPID="ResourcingMSP"
+#CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Resourcing.sqs.com/peers/peer0.Resourcing.sqs.com/tls/ca.crt
+#peer lifecycle chaincode checkcommitreadiness --channelID mainchannel --name mydoc --version 2.0 --init-required --sequence 1 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/sqs.com/orderers/orderer.sqs.com/msp/tlscacerts/tlsca.sqs.com-cert.pem --output json
+
+#CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/EngagementManagement.sqs.com/users/Admin@EngagementManagement.sqs.com/msp
+#CORE_PEER_ADDRESS=peer0.EngagementManagement.sqs.com:11051
+#CORE_PEER_LOCALMSPID="EngagementManagementMSP"
+#CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/EngagementManagement.sqs.com/peers/peer0.EngagementManagement.sqs.com/tls/ca.crt
+#peer lifecycle chaincode checkcommitreadiness --channelID mainchannel --name mydoc --version 2.0 --init-required --sequence 1 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/sqs.com/orderers/orderer.sqs.com/msp/tlscacerts/tlsca.sqs.com-cert.pem --output json
+
+
 #export ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/sqs.com/orderers/orderer.sqs.com/msp/tlscacerts/tlsca.sqs.com-cert.pem
-#peer lifecycle chaincode commit -o orderer.sqs.com:7050 --channelID mainchannel --name mydoc --version 1.0 --sequence 1 --init-required --tls --cafile $ORDERER_CA --peerAddresses peer0.Sales.sqs.com:7051 --peerAddresses peer0.Resourcing.sqs.com:9051 --peerAddresses peer0.EngagementManagement.sqs.com:11051
+#peer lifecycle chaincode commit -o orderer.sqs.com:7050 --channelID mainchannel --name mydoc --version 2.0 --sequence 1 --init-required --tls --cafile $ORDERER_CA --peerAddresses peer0.Sales.sqs.com:7051 --peerAddresses peer0.Resourcing.sqs.com:9051 --peerAddresses peer0.EngagementManagement.sqs.com:11051
 
-#peer lifecycle chaincode commit -o orderer.sqs.com:7050 --channelID mainchannel --name mydoc --version 2.0 --sequence 1 --init-required --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.sqs.com/msp/tlscacerts/tlsca.sqs.com-cert.pem --peerAddresses peer0.Sales.sqs.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Sales.sqs.com/peers/peer0.Sales.sqs.com/tls/ca.crt --peerAddresses peer0.Resourcing.sqs.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Resourcing.sqs.com/peers/peer0.Resourcing.sqs.com/tls/ca.crt
+#peer lifecycle chaincode commit -o orderer.sqs.com:7050 --channelID mainchannel --name mydoc --version 2.0 --sequence 1 --init-required --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/sqs.com/orderers/orderer.sqs.com/msp/tlscacerts/tlsca.sqs.com-cert.pem --peerAddresses peer0.Sales.sqs.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Sales.sqs.com/peers/peer0.Sales.sqs.com/tls/ca.crt --peerAddresses peer0.Resourcing.sqs.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Resourcing.sqs.com/peers/peer0.Resourcing.sqs.com/tls/ca.crt --peerAddresses peer0.EngagementManagement.sqs.com:11051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/EngagementManagement.sqs.com/peers/peer0.EngagementManagement.sqs.com/tls/ca.crt
 
-#peer chaincode invoke -o orderer.sqs.com:7050 --isInit --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/sqs.com/orderers/orderer.sqs.com/msp/tlscacerts/tlsca.sqs.com-cert.pem -C mainchannel -n mydoc --peerAddresses peer0.Resourcing.sqs.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Resourcing.sqs.com/peers/peer0.Resourcing.sqs.com/tls/ca.crt -c --peerAddresses peer0.EngagementManagement.sqs.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/EngagementManagement.sqs.com/peers/peer0.EngagementManagement.sqs.com/tls/ca.crt -c --peerAddresses peer0.Sales.sqs.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Sales.sqs.com/peers/peer0.Sales.sqs.com/tls/ca.crt '{"Args":["Init","Doc1","pdf","Sales","Resourcing", "29/5/2020", "12:14", "Are resources available?"]}' --waitForEvent
+#peer chaincode invoke -o orderer.sqs.com:7050 --isInit --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/sqs.com/orderers/orderer.sqs.com/msp/tlscacerts/tlsca.sqs.com-cert.pem -C mainchannel -n mydoc --peerAddresses peer0.Sales.sqs.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Sales.sqs.com/peers/peer0.Sales.sqs.com/tls/ca.crt --peerAddresses peer0.Resourcing.sqs.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Resourcing.sqs.com/peers/peer0.Resourcing.sqs.com/tls/ca.crt --peerAddresses peer0.EngagementManagement.sqs.com:11051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/EngagementManagement.sqs.com/peers/peer0.EngagementManagement.sqs.com/tls/ca.crt -c '{"Args":["init"]}' --waitForEvent
 
-
-
-
-
-
-
+##peer chaincode instantiate -n mydoc -v 2.0 -c '{“Args”:["Doc1","pdf"]}' -C mainchannel
+#peer chaincode -C mainchannel list --instantiated
+#peer chaincode upgrade -n Doc -p github.com/hyperledger/fabric-samples/chaincode/abstore/go
 
 
 
