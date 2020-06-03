@@ -23,8 +23,13 @@ export FABRIC_CFG_PATH=$PWD
 #../bin/configtxgen -profile ThirdChannel -outputAnchorPeersUpdate ./channel-artifacts/ResourcingMSPanchors.tx -channelID thirdchannel -asOrg ResourcingMSP
 
 export IMAGE_TAG=latest
+export SQSNETWORK_CA1_PRIVATE_KEY=priv_sk
+export SQSNETWORK_CA2_PRIVATE_KEY=priv_sk
+export SQSNETWORK_CA3_PRIVATE_KEY=priv_sk
+export SQSNETWORK_CA4_PRIVATE_KEY=priv_sk
 
-docker-compose -f docker-compose-cli.yaml  -f docker-compose-couch.yaml -f docker-compose-etcdraft2.yaml up -d
+docker-compose -f docker-compose-cli.yaml  -f docker-compose-couch.yaml -f docker-compose-ca.yaml -f docker-compose-etcdraft2.yaml up -d
+#docker-compose -f docker-compose-cli.yaml  -f docker-compose-couch.yaml -f docker-compose-etcdraft2.yaml up -d
 
 #docker-compose -f docker-compose-cli.yaml -f docker-compose-etcdraft2.yaml up -d
 

@@ -210,7 +210,7 @@ func (t *Chaincode) QueryDocBySender(stub shim.ChaincodeStubInterface, args []st
 
 	sender := strings.ToLower(args[0])
 
-	queryString := fmt.Sprintf("{\"selector\":{\"docType\":\"Doc\",\"sender\":\"%s\"}}", sender)
+	queryString := fmt.Sprintf("{\"selector\":{\"DocName\":\"Doc\",\"sender\":\"%s\"}}", sender)
 
 	queryResults, err := getQueryResultForQueryString(stub, queryString)
 	if err != nil {

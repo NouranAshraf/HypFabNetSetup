@@ -68,19 +68,19 @@ CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypt
 CORE_PEER_ADDRESS=peer0.Sales.sqs.com:7051
 CORE_PEER_LOCALMSPID="SalesMSP"
 CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Sales.sqs.com/peers/peer0.Sales.sqs.com/tls/ca.crt
-peer lifecycle chaincode approveformyorg --channelID mainchannel --name mydoc --version 2.0 --init-required --package-id mydoc1:f89293d10903a8d641e0ea6cea56811441f73ff82395712399c26a43844ecf23 --sequence 1 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/sqs.com/orderers/orderer.sqs.com/msp/tlscacerts/tlsca.sqs.com-cert.pem
+peer lifecycle chaincode approveformyorg --channelID mainchannel --name mydoc --version 2.0 --init-required --package-id  mydoc1:f89293d10903a8d641e0ea6cea56811441f73ff82395712399c26a43844ecf23 --sequence 1 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/sqs.com/orderers/orderer.sqs.com/msp/tlscacerts/tlsca.sqs.com-cert.pem
 
 CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Resourcing.sqs.com/users/Admin@Resourcing.sqs.com/msp
 CORE_PEER_ADDRESS=peer0.Resourcing.sqs.com:9051
 CORE_PEER_LOCALMSPID="ResourcingMSP"
 CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Resourcing.sqs.com/peers/peer0.Resourcing.sqs.com/tls/ca.crt
-peer lifecycle chaincode approveformyorg --channelID mainchannel --name mydoc --version 2.0 --init-required --package-id mydoc1:f89293d10903a8d641e0ea6cea56811441f73ff82395712399c26a43844ecf23 --sequence 1 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/sqs.com/orderers/orderer.sqs.com/msp/tlscacerts/tlsca.sqs.com-cert.pem
+peer lifecycle chaincode approveformyorg --channelID mainchannel --name mydoc --version 2.0 --init-required --package-id  mydoc1:f89293d10903a8d641e0ea6cea56811441f73ff82395712399c26a43844ecf23 --sequence 1 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/sqs.com/orderers/orderer.sqs.com/msp/tlscacerts/tlsca.sqs.com-cert.pem
 
 CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/EngagementManagement.sqs.com/users/Admin@EngagementManagement.sqs.com/msp
 CORE_PEER_ADDRESS=peer0.EngagementManagement.sqs.com:11051
 CORE_PEER_LOCALMSPID="EngagementManagementMSP"
 CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/EngagementManagement.sqs.com/peers/peer0.EngagementManagement.sqs.com/tls/ca.crt
-peer lifecycle chaincode approveformyorg --channelID mainchannel --name mydoc --version 2.0 --init-required --package-id mydoc1:f89293d10903a8d641e0ea6cea56811441f73ff82395712399c26a43844ecf23 --sequence 1 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/sqs.com/orderers/orderer.sqs.com/msp/tlscacerts/tlsca.sqs.com-cert.pem
+peer lifecycle chaincode approveformyorg --channelID mainchannel --name mydoc --version 2.0 --init-required --package-id  mydoc1:f89293d10903a8d641e0ea6cea56811441f73ff82395712399c26a43844ecf23 --sequence 1 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/sqs.com/orderers/orderer.sqs.com/msp/tlscacerts/tlsca.sqs.com-cert.pem
 
 peer lifecycle chaincode checkcommitreadiness --channelID mainchannel --name mydoc --version 2.0 --init-required --sequence 1 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/sqs.com/orderers/orderer.sqs.com/msp/tlscacerts/tlsca.sqs.com-cert.pem --output json
 
@@ -108,7 +108,7 @@ peer chaincode invoke -o orderer.sqs.com:7050 --tls true --cafile /opt/gopath/sr
 #peer chaincode -C mainchannel list --instantiated
 #peer chaincode upgrade -n Doc -p github.com/hyperledger/fabric-samples/chaincode/abstore/go
 #peer lifecycle chaincode queryinstalled
-#CC_PACKAGE_ID=mydoc1:f89293d10903a8d641e0ea6cea56811441f73ff82395712399c26a43844ecf23
+#CC_PACKAGE_ID= mydoc1:f89293d10903a8d641e0ea6cea56811441f73ff82395712399c26a43844ecf23
 
 
 
