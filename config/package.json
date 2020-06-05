@@ -1,7 +1,7 @@
 {
-    "name": "fabcar",
+    "name": "Docapp",
     "version": "1.0.0",
-    "description": "FabCar application implemented in JavaScript",
+    "description": "Docapp application implemented in JavaScript",
     "engines": {
         "node": ">=8",
         "npm": ">=5"
