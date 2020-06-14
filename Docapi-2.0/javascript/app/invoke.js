@@ -15,14 +15,11 @@ const util = require('util')
 const helper = require('./helper')
 
 const invokeTransaction = async (channelName, chaincodeName, fcn, args, username, orgName) => {
-    let orgPath = `ccp-${orgName}.json`;
-    let orgCa = `ca.${orgName}.sqs.com`;
-    let orgMSP =`${orgName}MSP`;
-    let walletName = `Sales-wallet`;
-
-
 
     try {
+        // Defining connection profile and wallet name
+        let orgPath = `ccp-${orgName}.json`;
+        let walletName = `${orgName}-wallet`;
         // load the network configuration
         let ccpPath = path.resolve(__dirname, '..', 'config', orgPath );
         let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));

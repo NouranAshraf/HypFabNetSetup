@@ -14,14 +14,11 @@ const logger = log4js.getLogger('BasicNetwork');
 const util = require('util')
 const helper = require('./helper')
 const query = async (channelName, chaincodeName, args, fcn, username, orgName) => {
-    let orgPath = `ccp-${orgName}.json`;
-    let orgCa = `ca.${orgName}.sqs.com`;
-    let orgMSP =`${orgName}MSP`;
-    let walletName = `${orgName}-wallet`;
-
-
 
     try {
+        // Defining connection profile and wallet name
+        let orgPath = `ccp-${orgName}.json`;
+        let walletName = `${orgName}-wallet`;
         let ccpPath = path.resolve(__dirname, '..', 'config', orgPath);
         let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
 

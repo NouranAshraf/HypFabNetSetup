@@ -6,9 +6,6 @@ const http = require('http')
 const util = require('util');
 const express = require('express')
 const app = express();
-//const expressJWT = require('express-jwt');
-//const jwt = require('jsonwebtoken');
-//const bearerToken = require('express-bearer-token');
 const cors = require('cors');
 const constants = require('./config/constants.json')
 
@@ -26,48 +23,12 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');  
     res.header("Access-Control-Allow-Headers", "Authorization");
-    
-   // console.log(req.headers['authorization']);
     next()
     }) ;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
 }));
-//// set secret variable
-//app.set('secret', 'thisismysecret');
-//app.use(expressJWT({
-//    secret: 'thisismysecret'
-//}).unless({
-//    path: ['/users']
-//}));
-
-//app.use(bearerToken());
-
-//app.use((req, res, next) => {
-//    logger.debug('New req for %s', req.originalUrl);
-//    if (req.originalUrl.indexOf('/users') >= 0) {
-//        return next();
-//    }
-
-//    var token = req.token;
-//    jwt.verify(token, app.get('secret'), (err, decoded) => {
-//        if (err) {
-//            res.send({
-//                success: false,
-//                message: 'Failed to authenticate token. Make sure to include the ' +
-//                    'token returned from /users call in the authorization header ' +
-//                    ' as a Bearer token'
-//            });
-//            return;
-//        } else {
-//            req.username = decoded.username;
-//            req.orgname = decoded.orgName;
-//            logger.debug(util.format('Decoded from JWT token: username - %s, orgname - %s', decoded.username, decoded.orgName));
-//            return next();
-//        }
-//    });
-//});
 
 var server = http.createServer(app).listen(port, function () { console.log(`Server started on ${port}`) });
 logger.info('****************** SERVER STARTED ************************');
@@ -87,6 +48,7 @@ app.post('/users', async function (req, res) {
     var username = req.body.username;
     var orgName = req.body.orgName;
     console.log(username)
+    console.log('userorg:', orgName)
     if (!username) {
         res.json(getErrorMessage('\'username\''));
         return;
@@ -96,19 +58,12 @@ app.post('/users', async function (req, res) {
         return;
     }
 
-//    var token = jwt.sign({
-//        exp: Math.floor(Date.now() / 1000) + parseInt(constants.jwt_expiretime),
-//        username: username,
-//        orgName: orgName
-//    }, app.get('secret'));
-
     let response = await helper.getRegisteredUser(username, orgName, true,orgName);
 
     console.log(response)
 
     if (response && typeof response !== 'string') {
         logger.debug('Successfully registered the username %s for organization %s', username, orgName);
-//        response.token = token;
         res.json(response);
     } else {
         logger.debug('Failed to register the username %s for organization %s with::%s', username, orgName, response);
@@ -123,7 +78,8 @@ app.post('/invoke', async function (req, res) {
         logger.debug('==================== INVOKE ON CHAINCODE ==================');
         var orgName = req.body.orgName;
         var userName = req.body.userName;
-        console.log(userName)
+        console.log('username:', userName)
+        console.log('userorg:', orgName)
         var peers = req.body.peers;
         var chaincodeName = req.body.chaincodeName;
         var channelName = req.body.channelName;
@@ -171,6 +127,8 @@ app.post('/query', async function (req, res) {
     try {
         var orgName = req.body.orgName;
         var userName = req.body.userName;
+        console.log('username:', userName)
+        console.log('userorg:', orgName)
         var channelName = req.body.channelName;
         var chaincodeName = req.body.chaincodeName;
         let args = req.body.args;
@@ -194,10 +152,6 @@ app.post('/query', async function (req, res) {
             return;
         }
         console.log('args==========', args);
-        //args = args.replace(/'/g, '"');
-        //args = JSON.parse(args);
-            
-
         let message = await query.query(channelName, chaincodeName, args, fcn, userName, orgName);
 
         const response_payload = {

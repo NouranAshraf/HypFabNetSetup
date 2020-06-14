@@ -8,7 +8,8 @@ const fs = require('fs');
 const util = require('util');
 
 
-
+//let org=`${orgName}`
+//console.log(org)
 
 const getCCP = async (org) => {
     let ccpPath;
@@ -27,7 +28,7 @@ const getCCP = async (org) => {
         return null
     const ccpJSON = fs.readFileSync(ccpPath, 'utf8')
     const ccp = JSON.parse(ccpJSON);
-//    console.log(ccp.peers)
+
     return ccp
 }
 
@@ -75,13 +76,13 @@ const getAffiliation = async (org) => {
        return org == "Sales" ? 'org1.department1' : 'org2.department1'
 }
 
-const getRegisteredUser = async (username, userOrg, isJson) => {
-    let ccp = await getCCP(userOrg)
+const getRegisteredUser = async (username, org, isJson) => {
+    let ccp = await getCCP(org)
 
-    const caURL = await getCaUrl(userOrg, ccp)
+    const caURL = await getCaUrl(org, ccp)
     const ca = new FabricCAServices(caURL);
 
-    const walletPath = await getWalletPath(userOrg)
+    const walletPath = await getWalletPath(org)
     const wallet = await Wallets.newFileSystemWallet(walletPath);
     console.log(`Wallet path: ${walletPath}`);
 
@@ -99,7 +100,7 @@ const getRegisteredUser = async (username, userOrg, isJson) => {
     let adminIdentity = await wallet.get('admin');
     if (!adminIdentity) {
         console.log('An identity for the admin user "admin" does not exist in the wallet');
-        await enrollAdmin(userOrg, ccp);
+        await enrollAdmin(org, ccp);
         adminIdentity = await wallet.get('admin');
         console.log("Admin Enrolled Successfully")
     }
@@ -109,14 +110,14 @@ const getRegisteredUser = async (username, userOrg, isJson) => {
     const adminUser = await provider.getUserContext(adminIdentity, 'admin');
 
     // Register the user, enroll the user, and import the new identity into the wallet.
-    const secret = await ca.register({ affiliation: await getAffiliation(userOrg), enrollmentID: username, role: 'client' }, adminUser);
+    const secret = await ca.register({ affiliation: await getAffiliation(org), enrollmentID: username, role: 'client' }, adminUser);
     // const secret = await ca.register({ affiliation: 'Sales.department1', enrollmentID: username, role: 'client', attrs: [{ name: 'role', value: 'approver', ecert: true }] }, adminUser);
 
     const enrollment = await ca.enroll({ enrollmentID: username, enrollmentSecret: secret });
     // const enrollment = await ca.enroll({ enrollmentID: username, enrollmentSecret: secret, attr_reqs: [{ name: 'role', optional: false }] });
 
     let x509Identity;
-    if (userOrg == "Sales") {
+    if (org == "Sales") {
         x509Identity = {
             credentials: {
                 certificate: enrollment.certificate,
@@ -125,7 +126,7 @@ const getRegisteredUser = async (username, userOrg, isJson) => {
             mspId: 'SalesMSP',
             type: 'X.509',
         };
-    } else if (userOrg == "Resourcing") {
+    } else if (org == "Resourcing") {
         x509Identity = {
             credentials: {
                 certificate: enrollment.certificate,
@@ -136,7 +137,7 @@ const getRegisteredUser = async (username, userOrg, isJson) => {
         };
     }
     
-      else if (userOrg == "EngagementManagement") {
+      else if (org == "EngagementManagement") {
         x509Identity = {
             credentials: {
                 certificate: enrollment.certificate,
@@ -145,7 +146,7 @@ const getRegisteredUser = async (username, userOrg, isJson) => {
             mspId: 'EngagementManagementMSP',
             type: 'X.509',
         };
-    } else if (userOrg == "Client") {
+    } else if (org == "Client") {
         x509Identity = {
             credentials: {
                 certificate: enrollment.certificate,
@@ -232,7 +233,7 @@ const enrollAdmin = async (org, ccp) => {
             };
         }
        
-      else if (userOrg == "EngagementManagement") {
+      else if (org == "EngagementManagement") {
         x509Identity = {
             credentials: {
                 certificate: enrollment.certificate,
@@ -241,7 +242,7 @@ const enrollAdmin = async (org, ccp) => {
             mspId: 'EngagementManagementMSP',
             type: 'X.509',
         };
-    } else if (userOrg == "Client") {
+    } else if (org == "Client") {
         x509Identity = {
             credentials: {
                 certificate: enrollment.certificate,
