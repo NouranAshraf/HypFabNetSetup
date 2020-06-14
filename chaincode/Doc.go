@@ -23,11 +23,8 @@ type Doc struct {
 	Name            string `json:"name"`
 	Sender          string `json:"sender"`
 	Receiver        string `json:"receiver"`
-	Date            string `json:"date"`
-	Time            string `json:"time"`
 	Msg             string `json:"msg"`
-    AttachName      string `json:"attachname"`
-    AttachType      string `json:"attachtype"`
+    AttachFile      string `json:"attachfile"`
        
 }
 
@@ -82,8 +79,8 @@ func (t *Chaincode) InitDoc(stub shim.ChaincodeStubInterface, args []string) pb.
 
 	var err error
 
-	//   0       1          2           3       4     5            6            7
-	// "name", "sender", "receiver", "date", "time", "msg", "attachname","attachtype"
+	//   0       1          2           3       4    
+	// "name", "sender", "receiver", "msg", "attachfile"
 	if len(args) != 8 {
 		return shim.Error("Incorrect number of arguments. Expecting 8")
 	}
@@ -105,24 +102,14 @@ func (t *Chaincode) InitDoc(stub shim.ChaincodeStubInterface, args []string) pb.
 	if len(args[4]) <= 0 {
 		return shim.Error("5th argument must be a non-empty string")
 	}
-	if len(args[5]) <= 0 {
-		return shim.Error("6th argument must be a non-empty string")
-	}
-	if len(args[6]) <= 0 {
-		return shim.Error("7th argument must be a non-empty string")
-	}
-        if len(args[7]) <= 0 {
-		return shim.Error("8th argument must be a non-empty string")
-	}
+
 
 	DocName := args[0]
 	sender := strings.ToLower(args[1])
 	receiver := strings.ToLower(args[2])
-	date := strings.ToLower(args[3])
-	time := strings.ToLower(args[4])
-	msg := strings.ToLower(args[5])			
-	attachname := strings.ToLower(args[6])
-	attachtype := strings.ToLower(args[7])
+	msg := strings.ToLower(args[3])			
+	attachfile := strings.ToLower(args[4])
+
 
 
 	// ==== Check if doc already exists ====
@@ -136,7 +123,7 @@ func (t *Chaincode) InitDoc(stub shim.ChaincodeStubInterface, args []string) pb.
 
 	fmt.Println("-start init doc")
 	// ==== Create doc object and marshal to JSON ====
-	Doc := &Doc{ DocName, sender, receiver, date, time, msg,attachname,attachtype}
+	Doc := &Doc{ DocName, sender, receiver, msg,attachfie}
 	DocJSONasBytes, err := json.Marshal(Doc)
 	if err != nil {
 		return shim.Error(err.Error())
