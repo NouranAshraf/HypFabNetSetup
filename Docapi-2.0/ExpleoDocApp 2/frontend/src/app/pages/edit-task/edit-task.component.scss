@@ -1,0 +1,12 @@
+@import '../../../main-styles.scss';
+.textarea {
+    display: flex;
+    rows:10 ;
+    cols: 50;
+   box-shadow: 0 0 0 5px #eeeeee;
+   background: $light;
+   opacity: 0.8;
+}
+
+
+

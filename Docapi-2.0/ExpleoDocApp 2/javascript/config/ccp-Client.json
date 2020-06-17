@@ -1,0 +1,61 @@
+{
+    "name": "sqs-network-Client",
+    "version": "1.0.0",
+    "client": {
+        "organization": "Client",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "Client": {
+            "mspid": "ClientMSP",
+            "peers": [
+                "peer0.Client.sqs.com"
+            ],
+            "certificateAuthorities": [
+                "ca.Client.sqs.com"
+            ]
+        }
+    },
+    "peers": {
+        "peer0.Client.sqs.com": {
+            "url": "grpcs://localhost:13051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICTzCCAfagAwIBAgIRAP0V9EpDgjlL2IEVunH3e70wCgYIKoZIzj0EAwIwcjEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xFzAVBgNVBAoTDkNsaWVudC5zcXMuY29tMR0wGwYDVQQDExR0bHNj\nYS5DbGllbnQuc3FzLmNvbTAeFw0yMDA2MDQxNzIzMDBaFw0zMDA2MDIxNzIzMDBa\nMHIxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1T\nYW4gRnJhbmNpc2NvMRcwFQYDVQQKEw5DbGllbnQuc3FzLmNvbTEdMBsGA1UEAxMU\ndGxzY2EuQ2xpZW50LnNxcy5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAR4\nbBMZN2XJtM076o6FEl4tdgmTrkDYnkomiBDoAonPsUwrvejZrivRgrRCqIONXJBU\n9WDnflEHlbsKsSmFuauRo20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYI\nKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIOcu\nrDPj9KQglPpcAzqpIOYkxNNIOhHjg/kNi09NLe82MAoGCCqGSM49BAMCA0cAMEQC\nIE88hXC3vgmMPer4SO2PMfNO+MtHgaFLQKHfVHNg4i7TAiAUWAot0u7aZQ3FDg+e\nHIW9lZFcfyHnDRAmwgs37dPKEw==\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.Client.sqs.com",
+                "hostnameOverride": "peer0.Client.sqs.com"
+            }
+        },
+        "peer1.Client.sqs.com": {
+            "url": "grpcs://localhost:14051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICTzCCAfagAwIBAgIRAP0V9EpDgjlL2IEVunH3e70wCgYIKoZIzj0EAwIwcjEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xFzAVBgNVBAoTDkNsaWVudC5zcXMuY29tMR0wGwYDVQQDExR0bHNj\nYS5DbGllbnQuc3FzLmNvbTAeFw0yMDA2MDQxNzIzMDBaFw0zMDA2MDIxNzIzMDBa\nMHIxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1T\nYW4gRnJhbmNpc2NvMRcwFQYDVQQKEw5DbGllbnQuc3FzLmNvbTEdMBsGA1UEAxMU\ndGxzY2EuQ2xpZW50LnNxcy5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAR4\nbBMZN2XJtM076o6FEl4tdgmTrkDYnkomiBDoAonPsUwrvejZrivRgrRCqIONXJBU\n9WDnflEHlbsKsSmFuauRo20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYI\nKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIOcu\nrDPj9KQglPpcAzqpIOYkxNNIOhHjg/kNi09NLe82MAoGCCqGSM49BAMCA0cAMEQC\nIE88hXC3vgmMPer4SO2PMfNO+MtHgaFLQKHfVHNg4i7TAiAUWAot0u7aZQ3FDg+e\nHIW9lZFcfyHnDRAmwgs37dPKEw==\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.Client.sqs.com",
+                "hostnameOverride": "peer1.Client.sqs.com"
+            }
+        }        
+        
+        
+    },
+    "certificateAuthorities": {
+        "ca.Client.sqs.com": {
+            "url": "https://localhost:10054",
+            "caName": "ca-Client",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICTzCCAfagAwIBAgIRAP0V9EpDgjlL2IEVunH3e70wCgYIKoZIzj0EAwIwcjEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xFzAVBgNVBAoTDkNsaWVudC5zcXMuY29tMR0wGwYDVQQDExR0bHNj\nYS5DbGllbnQuc3FzLmNvbTAeFw0yMDA2MDQxNzIzMDBaFw0zMDA2MDIxNzIzMDBa\nMHIxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1T\nYW4gRnJhbmNpc2NvMRcwFQYDVQQKEw5DbGllbnQuc3FzLmNvbTEdMBsGA1UEAxMU\ndGxzY2EuQ2xpZW50LnNxcy5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAR4\nbBMZN2XJtM076o6FEl4tdgmTrkDYnkomiBDoAonPsUwrvejZrivRgrRCqIONXJBU\n9WDnflEHlbsKsSmFuauRo20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYI\nKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIOcu\nrDPj9KQglPpcAzqpIOYkxNNIOhHjg/kNi09NLe82MAoGCCqGSM49BAMCA0cAMEQC\nIE88hXC3vgmMPer4SO2PMfNO+MtHgaFLQKHfVHNg4i7TAiAUWAot0u7aZQ3FDg+e\nHIW9lZFcfyHnDRAmwgs37dPKEw==\n-----END CERTIFICATE-----\n"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

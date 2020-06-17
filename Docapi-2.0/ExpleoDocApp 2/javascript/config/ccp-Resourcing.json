@@ -1,0 +1,61 @@
+{
+    "name": "sqs-network-Resourcing",
+    "version": "1.0.0",
+    "client": {
+        "organization": "Resourcing",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "Resourcing": {
+            "mspid": "ResourcingMSP",
+            "peers": [
+                "peer0.Resourcing.sqs.com"
+            ],
+            "certificateAuthorities": [
+                "ca.Resourcing.sqs.com"
+            ]
+        }
+    },
+    "peers": {
+        "peer0.Resourcing.sqs.com": {
+            "url": "grpcs://localhost:9051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICYDCCAgagAwIBAgIRAJ6b8c0cLsu3HXTuh/SUjQIwCgYIKoZIzj0EAwIwejEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xGzAZBgNVBAoTElJlc291cmNpbmcuc3FzLmNvbTEhMB8GA1UEAxMY\ndGxzY2EuUmVzb3VyY2luZy5zcXMuY29tMB4XDTIwMDYwNDE3MjMwMFoXDTMwMDYw\nMjE3MjMwMFowejELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAU\nBgNVBAcTDVNhbiBGcmFuY2lzY28xGzAZBgNVBAoTElJlc291cmNpbmcuc3FzLmNv\nbTEhMB8GA1UEAxMYdGxzY2EuUmVzb3VyY2luZy5zcXMuY29tMFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEtsMyddGkHrisVLfAdmHy5bsoMIOQqSPhp+yjP6UKlbHF\nlG0kXlAeHGooTdEfVCW1dOwNvH6Gh7joCbIW4gLFk6NtMGswDgYDVR0PAQH/BAQD\nAgGmMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTAD\nAQH/MCkGA1UdDgQiBCAGC9ee4RKjXcWwp7CIAYdhUoIMNc/PH/BfhEiABWWbIzAK\nBggqhkjOPQQDAgNIADBFAiAWc/C1Km+RQbkOEKFWz22ZN+o8FwauaBE6ZeKWFtH4\newIhAOgU1JVZMsNZ4tcbBCYR/98kJxAs+pWzz/8nJUmikCQu\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.Resourcing.sqs.com",
+                "hostnameOverride": "peer0.Resourcing.sqs.com"
+            }
+        },
+        "peer1.Resourcing.sqs.com": {
+            "url": "grpcs://localhost:10051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICYDCCAgagAwIBAgIRAJ6b8c0cLsu3HXTuh/SUjQIwCgYIKoZIzj0EAwIwejEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xGzAZBgNVBAoTElJlc291cmNpbmcuc3FzLmNvbTEhMB8GA1UEAxMY\ndGxzY2EuUmVzb3VyY2luZy5zcXMuY29tMB4XDTIwMDYwNDE3MjMwMFoXDTMwMDYw\nMjE3MjMwMFowejELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAU\nBgNVBAcTDVNhbiBGcmFuY2lzY28xGzAZBgNVBAoTElJlc291cmNpbmcuc3FzLmNv\nbTEhMB8GA1UEAxMYdGxzY2EuUmVzb3VyY2luZy5zcXMuY29tMFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEtsMyddGkHrisVLfAdmHy5bsoMIOQqSPhp+yjP6UKlbHF\nlG0kXlAeHGooTdEfVCW1dOwNvH6Gh7joCbIW4gLFk6NtMGswDgYDVR0PAQH/BAQD\nAgGmMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTAD\nAQH/MCkGA1UdDgQiBCAGC9ee4RKjXcWwp7CIAYdhUoIMNc/PH/BfhEiABWWbIzAK\nBggqhkjOPQQDAgNIADBFAiAWc/C1Km+RQbkOEKFWz22ZN+o8FwauaBE6ZeKWFtH4\newIhAOgU1JVZMsNZ4tcbBCYR/98kJxAs+pWzz/8nJUmikCQu\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.Resourcing.sqs.com",
+                "hostnameOverride": "peer1.Resourcing.sqs.com"
+            }
+        }        
+        
+        
+    },
+    "certificateAuthorities": {
+        "ca.Resourcing.sqs.com": {
+            "url": "https://localhost:8054",
+            "caName": "ca-Resourcing",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICYDCCAgagAwIBAgIRAJ6b8c0cLsu3HXTuh/SUjQIwCgYIKoZIzj0EAwIwejEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xGzAZBgNVBAoTElJlc291cmNpbmcuc3FzLmNvbTEhMB8GA1UEAxMY\ndGxzY2EuUmVzb3VyY2luZy5zcXMuY29tMB4XDTIwMDYwNDE3MjMwMFoXDTMwMDYw\nMjE3MjMwMFowejELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAU\nBgNVBAcTDVNhbiBGcmFuY2lzY28xGzAZBgNVBAoTElJlc291cmNpbmcuc3FzLmNv\nbTEhMB8GA1UEAxMYdGxzY2EuUmVzb3VyY2luZy5zcXMuY29tMFkwEwYHKoZIzj0C\nAQYIKoZIzj0DAQcDQgAEtsMyddGkHrisVLfAdmHy5bsoMIOQqSPhp+yjP6UKlbHF\nlG0kXlAeHGooTdEfVCW1dOwNvH6Gh7joCbIW4gLFk6NtMGswDgYDVR0PAQH/BAQD\nAgGmMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTAD\nAQH/MCkGA1UdDgQiBCAGC9ee4RKjXcWwp7CIAYdhUoIMNc/PH/BfhEiABWWbIzAK\nBggqhkjOPQQDAgNIADBFAiAWc/C1Km+RQbkOEKFWz22ZN+o8FwauaBE6ZeKWFtH4\newIhAOgU1JVZMsNZ4tcbBCYR/98kJxAs+pWzz/8nJUmikCQu\n-----END CERTIFICATE-----\n"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}
