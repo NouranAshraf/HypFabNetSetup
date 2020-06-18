@@ -73,8 +73,10 @@ export class TaskViewComponent implements OnInit {
   }
   
     Documents() {
-    this.webReqService.getDocuments().pipe(
-      map((res: any) => res.jsoonsole.log()n(), c));
+    this.webReqService.getDocuments().subscribe((res: HttpResponse<any>) => {
+      console.log(res);
+      this.documents=res;
+    });
   }
   
 onSearchButtonClicked(name: string) {
