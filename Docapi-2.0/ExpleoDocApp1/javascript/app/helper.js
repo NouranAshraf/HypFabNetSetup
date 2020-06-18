@@ -91,7 +91,7 @@ const getRegisteredUser = async (username, org, isJson) => {
         console.log(`An identity for the user ${username} already exists in the wallet`);
         var response = {
             success: true,
-            message: username + ' enrolled Successfully',
+            message: username + ' already enrolled Successfully',
         };
         return response
     }

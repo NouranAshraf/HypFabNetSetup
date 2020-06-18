@@ -43,12 +43,41 @@ function getErrorMessage(field) {
     return response;
 }
 
+//check for registered users
+app.post('/login', async function (req, res) {
+    var username = req.body.username;
+    var orgName = req.body.orgName;
+    console.log(username)
+    console.log('orgName:', orgName)
+    if (!username) {
+        res.json(getErrorMessage('\'username\''));
+        return;
+    }
+    if (!orgName) {
+        res.json(getErrorMessage('\'orgName\''));
+        return;
+    }
+
+    let response = await helper.getRegisteredUser(username, orgName, true,orgName);
+
+    console.log(response)
+
+    if (response && typeof response !== 'string') {
+        logger.debug('usr is valid %s', username, orgName);
+        res.json(response);
+    } else {
+        logger.debug('user is not valid %s with::%s', username, orgName, response);
+        res.json({ success: false, message: response });
+    }
+
+});
+
 // Register and enroll user
 app.post('/users', async function (req, res) {
     var username = req.body.username;
     var orgName = req.body.orgName;
     console.log(username)
-    console.log('userorg:', orgName)
+    console.log('orgName:', orgName)
     if (!username) {
         res.json(getErrorMessage('\'username\''));
         return;
@@ -79,7 +108,7 @@ app.post('/invoke', async function (req, res) {
         var orgName = req.body.orgName;
         var userName = req.body.userName;
         console.log('username:', userName)
-        console.log('userorg:', orgName)
+        console.log('orgName:', orgName)
         var peers = req.body.peers;
         var chaincodeName = req.body.chaincodeName;
         var channelName = req.body.channelName;
@@ -104,6 +133,7 @@ app.post('/invoke', async function (req, res) {
         }
 
         let message = await invoke.invokeTransaction(channelName, chaincodeName, fcn, args, userName, orgName);
+        console.log(message);
 
         const response_payload = {
             result: message,
@@ -128,7 +158,7 @@ app.post('/query', async function (req, res) {
         var orgName = req.body.orgName;
         var userName = req.body.userName;
         console.log('username:', userName)
-        console.log('userorg:', orgName)
+        console.log('orgName:', orgName)
         var channelName = req.body.channelName;
         var chaincodeName = req.body.chaincodeName;
         let args = req.body.args;
