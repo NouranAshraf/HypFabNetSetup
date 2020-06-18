@@ -10,24 +10,24 @@ import { shareReplay, tap } from 'rxjs/operators';
 })
 export class AuthService {
 
-  constructor(private webService: WebRequestService, private router: Router, private http: HttpClient) { }
+  constructor(private webReqService: WebRequestService, private router: Router, private http: HttpClient) { }
 
   login(email: string, password: string) {
-    return this.webService.login(email, password).pipe(
+    return this.webReqService.login(email, password).pipe(
       shareReplay(),
-      tap((res: HttpResponse<any>) => {
+      tap((res: any) => {
         // the auth tokens will be in the header of this response
-        this.setSession(res.body._id, res.headers.get('x-access-token'), res.headers.get('x-refresh-token'));
-        console.log("LOGGED IN!");
+       this.setSession(res.body._id, res.headers.get('x-access-token'), res.headers.get('x-refresh-token'));
+        console.log("Successfully logged in!");
       })
     )
   }
 
 
-  signup(email: string, password: string) {
-    return this.webService.signup(email, password).pipe(
+signup(email: string, password: string) {
+    return this.webReqService.signup(email, password).pipe(
       shareReplay(),
-      tap((res: HttpResponse<any>) => {
+      tap((res: any) => {
         // the auth tokens will be in the header of this response
         this.setSession(res.body._id, res.headers.get('x-access-token'), res.headers.get('x-refresh-token'));
         console.log("Successfully signed up and now logged in!");
@@ -72,7 +72,7 @@ export class AuthService {
   }
 
   getNewAccessToken() {
-    return this.http.get(`${this.webService.ROOT_URL}/users/me/access-token`, {
+    return this.http.get(`${this.webReqService.ROOT_URL}/users/me/access-token`, {
       headers: {
         'x-refresh-token': this.getRefreshToken(),
         '_id': this.getUserId()

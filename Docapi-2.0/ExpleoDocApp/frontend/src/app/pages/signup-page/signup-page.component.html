@@ -7,7 +7,7 @@
     
     <div class="field">
       <p class="control has-icons-left has-icons-right">
-        <input #emailInput class="input has-background-light" type="email" placeholder="Email">
+        <input #usernameInput class="input has-background-light" type="username" placeholder="username">
         <span class="icon is-small is-left">
           <i class="fas fa-envelope"></i>
         </span>
@@ -34,7 +34,7 @@
     
     <div class="field" style="display: flex; justify-content: flex-end;">
       <p class="control">
-        <button class="button is-success has-text-white" (click)="onSignupButtonClicked(emailInput.value, pwInput.value)">
+        <button class="button is-success has-text-white" (click)="onSignupButtonClicked(usernameInput.value, depInput.value)">
           Sign up
         </button>
       </p>

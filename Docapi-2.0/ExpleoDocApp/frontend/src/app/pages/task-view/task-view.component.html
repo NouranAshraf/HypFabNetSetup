@@ -2,17 +2,23 @@
   <div class="task-manager-container">
 
     <div class="sidebar has-background-white">
-      <h1 class="title has-text-primary">
-        Documents
+
+      <h1 class="title has-text-warn">
+        Expleo-Docs
       </h1>
-
+      <br>
+       <br>
       <div class="list-menu">
+       <br>
+       <br>
 
-
+       
+       <button class="button is-primary has-text-white is-medium" (click)="Documents()">Show All Documents</button>
       </div>
+      
+    
 
-      <button class="button is-primary has-text-white" routerLink="/lists/new-task">+ New Document</button>
-
+ <button class="button is-primary has-text-white is-medium" routerLink="/lists/new-task">+ New Document</button>
     </div>
 
     <div class="task-list-container has-background-light">
@@ -31,6 +37,7 @@
             </div>
             <div class="dropdown-menu" id="dropdown-menu4" role="menu">
               <div class="dropdown-content">
+              
                 <a [routerLink]="['/edit-list', selectedListId]" class="dropdown-item">
                   Edit
                 </a>
@@ -41,6 +48,7 @@
             </div>
           </div>
         </div>
+        
 
         <!-- Docs Elements -->
         <div class="task" *ngFor="let task of tasks" (click)="onTaskClick(task)" [ngClass]="{ 'completed': task.completed }">
@@ -72,10 +80,21 @@
             <img src="../../../assets/logout.png" class="has-text-white" >
             </button>
             <br>
+
        <div class="search">
-    <input matInput type="search" placeholder="search here" class="search-input">
-      <button type="submit"><i class="fa fa-search"></i></button>
+    <input #searchInput type="search" placeholder="search here" class="search-input">
+    <button class="button is-success has-text-white" (click)="onSearchButtonClicked(searchInput.value)">
+   <i class="fa fa-search"></i> </button>
 </div>
+
+           <div >
+       <br>
+       <br>
+       {{documents}}
+       
+
+      </div>
+
       <div *ngIf="!tasks">
       <br>
 <br>
@@ -87,6 +106,7 @@
 <br>
    
         <h3 class="empty-state-text">There are no documents yet !</h3>
+
       </div>
 
     </div>

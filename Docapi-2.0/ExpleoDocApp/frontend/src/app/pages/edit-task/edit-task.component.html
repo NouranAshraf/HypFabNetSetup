@@ -3,30 +3,39 @@
     <h1 class="title">
       Edit Document
     </h1>
+    
+    <div class="emailBox">
+   <label for="name"></label>Name: <br>
+   <br>
+    <input #nameInput class="input has-background-light is-medium" type="text" placeholder="Please provide receiving department...">
+    </div>
+    <br>  
+    
   <div class="emailBox">
    <label for="receiver"></label>To: <br>
    <br>
-    <input #taskTitleInput class="input has-background-light is-medium" type="text" placeholder="Please provide receiving department...">
+    <input #receiverInput class="input has-background-light is-medium" type="text" placeholder="Please provide receiving department...">
     </div>
     <br>
     <div class="emailBox">  
     <label for="sender"></label>From: <br>
     <br>
-    <input #taskTitleInput class="input has-background-light is-medium" type="text" placeholder="Please provide sending department...">
+    <input #senderInput class="input has-background-light is-medium" type="text" placeholder="Please provide sending department...">
     </div>
     <br>
       <div class="emailBox">
    <label for="subject"></label>Subject: <br>
    <br>
-    <input #taskTitleInput class="input has-background-light is-medium" type="text" placeholder="Please provide a brief description...">
+    <input #subjectInput class="input has-background-light is-medium" type="text" placeholder="Please provide a brief description...">
     </div>
     <br>
-     <div class="messageBox" >
-   <label for="message">Body</label><br>
+      <div class="emailBox">
+   <label for="message"></label>Body: <br>
    <br>
-      <textarea class="textarea"
-         placeholder="Please enter your message here.."></textarea>
+    <input #messageInput class="input has-background-light is-medium" type="text" placeholder="Please enter your message here...">
     </div>
+    <br>
+
 
     <br><br>
     
@@ -39,8 +48,10 @@
     
       <br><br>
     <div class="buttons is-right">
-      <button class="button is-medium" routerLink="/">Cancel</button>
-      <button class="button is-primary has-text-white is-medium" (click)="updateTask(taskTitleInput.value)">Save</button>
+      <button class="button is-medium" routerLink="/lists">Cancel</button>
+       <button class="button is-primary has-text-white is-medium" (click)="onSaveButtonClicked(nameInput.value, senderInput.value, receiverInput.value, messageInput.value, subjectInput.value)">
+      Save
+      </button>
     </div>
 
 

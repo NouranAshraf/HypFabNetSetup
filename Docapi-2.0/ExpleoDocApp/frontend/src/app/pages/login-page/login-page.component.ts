@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/auth.service';
 import { HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { WebRequestService} from 'src/app/web-request.service';
 
 @Component({
   selector: 'app-login-page',
@@ -10,20 +11,20 @@ import { Router } from '@angular/router';
 })
 export class LoginPageComponent implements OnInit {
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private webReqService : WebRequestService) { }
 
   ngOnInit() {
   }
 
-  onLoginButtonClicked(email: string, password: string) {
-    this.authService.login(email, password).subscribe((res: HttpResponse<any>) => {
-      if (res.status === 200) {
-        // we have logged in successfully
-        this.router.navigate(['/lists']);
-      }
+onLoginButtonClicked(username: string, orgName: string, password: string) {
+ if(username && orgName && password){
+    this.authService.login(username, orgName).subscribe((res: HttpResponse<any>) => {
+    if(res.status === 200){
       console.log(res);
-      
+      this.router.navigate(['/lists']);}
     });
+    
   }
+}
 
 }
