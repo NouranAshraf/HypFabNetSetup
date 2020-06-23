@@ -20,7 +20,6 @@ import { EditTaskComponent } from './pages/edit-task/edit-task.component';
     NewTaskComponent,
     LoginPageComponent,
     SignupPageComponent,
-
     EditTaskComponent
   ],
   imports: [

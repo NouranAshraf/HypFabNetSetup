@@ -1,6 +1,12 @@
-export class Task {
-    _id: string;
-    _listId: string;
-    title: string;
-    completed: boolean;
+export interface Task {
+    Key: string;
+     Record: {
+        name: string;
+        "msg": string;
+        "subject": string;
+        "receiver": string;
+         "sender": string;
+        
+    }
+
 }

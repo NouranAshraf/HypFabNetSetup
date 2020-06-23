@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { TaskService } from 'src/app/task.service';
 import { WebRequestService} from 'src/app/web-request.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Task } from 'src/app/models/task.model';
@@ -8,87 +7,66 @@ import { List } from 'src/app/models/list.model';
 import { HttpResponse } from '@angular/common/http';
 import { map } from "rxjs/operators"; 
 
+
+
+
 @Component({
   selector: 'app-task-view',
   templateUrl: './task-view.component.html',
   styleUrls: ['./task-view.component.scss']
 })
 export class TaskViewComponent implements OnInit {
-
-  lists: List[];
-  tasks: Task[];
+  constructor( private route: ActivatedRoute, private router: Router,private authService: AuthService, private webReqService : WebRequestService) { }
+  
   documents: any;
-
+  username: string;
+  userData:any;
+ show : boolean = false;
+ search : boolean = false;
 
   selectedListId: string;
 
-
-  constructor(private taskService: TaskService, private route: ActivatedRoute, private router: Router,private authService: AuthService, private webReqService : WebRequestService) { }
-
   ngOnInit() {
-    this.route.params.subscribe(
-      (params: Params) => {
-        if (params.listId) {
-          this.selectedListId = params.listId;
-          this.taskService.getTasks(params.listId).subscribe((tasks: Task[]) => {
-            this.tasks = tasks;
-          })
-        } else {
-          this.tasks = undefined;
-        }
-      }
-    )
-
-    this.taskService.getLists().subscribe((lists: List[]) => {
-      this.lists = lists;
-    })
+   this.Documents();
+ 
     
   }
-
+  
+   onDeleteButtonClicked(name: string) {
+     this.webReqService.DeleteDoc(name).subscribe((res: any) => {
+     alert("Successfully Deleted Document" +" " + name +" "+ "Press update documents")
+     this.router.navigate(['/lists']);
+    });
+  }
+  
   onLogoutButtonClicked() {
     this.authService.logout();
   }
 
-  onTaskClick(task: Task) {
-    // we want to set the task to completed
-    this.taskService.complete(task).subscribe(() => {
-      // the task has been set to completed successfully
-      console.log("Completed successully!");
-      task.completed = !task.completed;
-    })
-  }
+    Documents() {
+    this.webReqService.getDocuments().subscribe((res: any) => {
+              this.userData=res.result;
+              
 
-  onDeleteListClick() {
-    this.taskService.deleteList(this.selectedListId).subscribe((res: any) => {
-      this.router.navigate(['/lists']);
-      console.log(res);
-    })
-  }
-
-  onDeleteTaskClick(id: string) {
-    this.taskService.deleteTask(this.selectedListId, id).subscribe((res: any) => {
-      this.tasks = this.tasks.filter(val => val._id !== id);
-      console.log(res);
-    })
+});
+                                
   }
   
-    Documents() {
-    this.webReqService.getDocuments().subscribe((res: HttpResponse<any>) => {
-      console.log(res);
-      this.documents=res;
-    });
-  }
+  onDocHistoryButtonClicked(name: string) {
+    this.webReqService.DocValueHistory(name).subscribe((res: any) => {
+              this.userData=res.body.result;
+
+});
+                 
+}
   
 onSearchButtonClicked(name: string) {
-console.log(name);
- if(name){
-    this.webReqService.getSearch(name).subscribe((res: HttpResponse<any>) => {
-    if(res.status === 200){
-      console.log(res);
-      this.router.navigate(['/lists']);}
-    });
-    
-  }
+ this.webReqService.getSearch(name).subscribe((res: any) => {
+              this.userData=res.body.result;
+              });
 }
+
+
+
 
 }

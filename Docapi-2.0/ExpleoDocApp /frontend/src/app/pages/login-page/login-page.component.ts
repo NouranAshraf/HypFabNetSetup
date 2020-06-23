@@ -10,13 +10,15 @@ import { WebRequestService} from 'src/app/web-request.service';
   styleUrls: ['./login-page.component.scss']
 })
 export class LoginPageComponent implements OnInit {
-
+ userName:string;
   constructor(private authService: AuthService, private router: Router, private webReqService : WebRequestService) { }
 
   ngOnInit() {
   }
 
 onLoginButtonClicked(username: string, orgName: string, password: string) {
+this.userName=username;
+console.log(this.userName);
  if(username && orgName && password){
     this.authService.login(username, orgName).subscribe((res: HttpResponse<any>) => {
     if(res.status === 200){
@@ -26,5 +28,9 @@ onLoginButtonClicked(username: string, orgName: string, password: string) {
     
   }
 }
+
+getusername() {
+   return this.userName;
+    }
 
 }

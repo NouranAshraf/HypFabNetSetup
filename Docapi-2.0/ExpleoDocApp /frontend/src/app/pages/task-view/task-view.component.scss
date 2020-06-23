@@ -4,8 +4,10 @@
     display: flex;
     width: 100%;
     height: 100%;
-    max-width: 1200px;
-    max-height: 695px;
+    max-width: 1500px;
+    max-height: 700px;
+    
+
 }
 
 .sidebar {
@@ -27,6 +29,7 @@
     flex-direction: column;
     flex-grow: 1;
     padding: 42px;
+    background: $purple;
 
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
@@ -42,12 +45,19 @@
     }
 
 }
+.white-box{
 
+position: absolute;
+   top: 100px;
+   right: 500px;
+   width: 1000px
+}
 .list-menu {
     display: flex;
     flex-direction: column;
     margin-top: 15px;
     flex-grow: 1; 
+    
 
     .list-menu-item {
         display: flex;
@@ -118,8 +128,8 @@
 
 .circle-add-button {
     position: absolute;
-    bottom: 35px;
-    right: 35px;
+    bottom: 20px;
+    right: 20px;
     height: 50px;
     width: 50px;
     border-radius: 20%;
@@ -141,5 +151,18 @@
    left: 30px;
     text-align: center;
 }
+
+
+.table table-trapped{
+background: white;
+}
+
+
+
+
+
+
+
+
 
 

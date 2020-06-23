@@ -35,11 +35,10 @@
     <input #messageInput class="input has-background-light is-medium" type="text" placeholder="Please enter your message here...">
     </div>
     <br>
-
-
-    <br><br>
+    <br>
+    <input type="file" (change)="onFileChanged($event)">
     <div>
-    <input type="file" value="upload" accept="./*" (change)=fileUploader($event)>
+    
     </div>
 
     

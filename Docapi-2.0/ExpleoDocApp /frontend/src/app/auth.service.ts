@@ -72,7 +72,7 @@ signup(email: string, password: string) {
   }
 
   getNewAccessToken() {
-    return this.http.get(`${this.webReqService.ROOT_URL}/users/me/access-token`, {
+    return this.http.get(`${this.webReqService.invokeUrl}/users/me/access-token`, {
       headers: {
         'x-refresh-token': this.getRefreshToken(),
         '_id': this.getUserId()

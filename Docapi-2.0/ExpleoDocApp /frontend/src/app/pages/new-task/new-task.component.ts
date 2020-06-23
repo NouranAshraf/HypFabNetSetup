@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { TaskService } from 'src/app/task.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Task } from 'src/app/models/task.model';
 import { HttpResponse } from '@angular/common/http';
 import { WebRequestService} from 'src/app/web-request.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-new-task',
@@ -11,8 +11,9 @@ import { WebRequestService} from 'src/app/web-request.service';
   styleUrls: ['./new-task.component.scss']
 })
 export class NewTaskComponent implements OnInit {
-
-  constructor(private taskService: TaskService, private route: ActivatedRoute, private router: Router, private webReqService : WebRequestService) { }
+ 
+ file: File= null;
+  constructor( private route: ActivatedRoute, private router: Router, private webReqService : WebRequestService, private http: HttpClient) { }
 
   listId: string;
   selectedFile : string;
@@ -24,15 +25,11 @@ export class NewTaskComponent implements OnInit {
     )
   }
 
-  createTask(title: string) {
-    this.taskService.createTask(title, this.listId).subscribe((newTask: Task) => {
-      this.router.navigate(['../'], { relativeTo: this.route });
-    })
-  }
+  
 
  
 onCreateButtonClicked(name: string, sender: string, receiver: string, message: string, subject: string) {
- if(name && sender && receiver&& message &&subject){
+ if(name && sender && receiver && message && subject){
     this.webReqService.createDoc(name, sender, receiver, message, subject).subscribe((res: HttpResponse<any>) => {
     if(res.status === 200){
       console.log(res);
@@ -41,5 +38,18 @@ onCreateButtonClicked(name: string, sender: string, receiver: string, message: s
     
   }
 }
+
+
+onFileChanged(event) {
+   console.log(event);
+    this.file = event.target.files[0]
+    this.webReqService.uploadFile(this.file).subscribe((res: HttpResponse<any>) => {
+      console.log(res);
+      alert(res);
+
+    });
+
+  }
+
 
 }

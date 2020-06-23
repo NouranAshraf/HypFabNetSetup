@@ -50,52 +50,73 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
 
         // Evaluate the specified transaction.
         let result;
+        let message;
         
        if (fcn == "InitDoc"){
         result= await contract.submitTransaction('InitDoc', args[0], args[1], args[2], args[3], args[4]);
         console.log(result.toString())
-        result = JSON.parse(result.toString());
-        return result
+        message = `Successfully modified offer state with key ${args[0]}`
+//         return message
+//        result = JSON.parse(result.toString());
+//        return result
         
         }else if (fcn == "DeleteDoc") {
         result= await contract.submitTransaction('DeleteDoc', args[0]);
         console.log(result.toString())
-        result = JSON.parse(result.toString());
-        return result
+        message = `Successfully modified offer state with key ${args[0]}`
+//        return message
+//        result = JSON.parse(result.toString());
+//        return result
 
         }else if (fcn == "QueryDocByName") {
         result= await contract.submitTransaction('QueryDocByName', args[0]);
         console.log(result.toString())
-        result = JSON.parse(result.toString());
-        return result
+        message = `Successfully modified offer state with key ${args[0]}`
+//        return message
+//        result = JSON.parse(result.toString());
+//        return result
 
         }else if (fcn == "QueryDocBySender") {
         result=  await contract.submitTransaction('QueryDocBySender', args[0]);
         console.log(result.toString())
-        result = JSON.parse(result.toString());
-        return result
+        message = `Successfully modified offer state with key ${args[0]}`
+//        return message
+//        result = JSON.parse(result.toString());
+//        return result
 
         }else if (fcn == "DocValueHistory") {
         result= await contract.submitTransaction('DocValueHistory', args[0]);
         console.log(result.toString())
-        result = JSON.parse(result.toString());
-        return result
+        message = `Successfully modified offer state with key ${args[0]}`
+//        return message
+//        result = JSON.parse(result.toString());
+//        return result
 
         }else if (fcn == "GetDocsByRange") {
         result= await contract.submitTransaction('GetDocsByRange', args[0], args[1]);
         console.log(result.toString())
-        result = JSON.parse(result.toString());
-        return result
+        message = `Successfully modified offer state with key ${args[0]}`
+//        return message
+//        result = JSON.parse(result.toString());
+//        return result
 
         }else if (fcn == "GetAllDocs") {
         result= await contract.submitTransaction('GetAllDocs');
         console.log(result.toString())
-        result = JSON.parse(result.toString());
-        return result
+        message = `Successfully modified offer state with key ${args[0]}`
+//        return message
+//        result = JSON.parse(result.toString());
+//        return result
 
         }else{
          return `Invocation require either createDocument or modifiyDocument or modifiyOfferState or addComment as function but got ${fcn}`
         }
+        
+         let response = {
+            message: message,
+            //result
+        }
+        return response;
 
     } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);

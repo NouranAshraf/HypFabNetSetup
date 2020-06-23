@@ -8,6 +8,7 @@ const express = require('express')
 const app = express();
 const cors = require('cors');
 const constants = require('./config/constants.json')
+const formidable= require('formidable')
 
 const host = process.env.HOST || constants.host;
 const port = process.env.PORT || constants.port;
@@ -16,7 +17,7 @@ const port = process.env.PORT || constants.port;
 const helper = require('./app/helper')
 const invoke = require('./app/invoke')
 const query = require('./app/query')
-
+const upload = require("express-fileupload")
 app.options('*', cors());
 app.use(cors());
 app.use(function(req, res, next) {
@@ -30,6 +31,7 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
+app.use(upload());
 var server = http.createServer(app).listen(port, function () { console.log(`Server started on ${port}`) });
 logger.info('****************** SERVER STARTED ************************');
 logger.info('***************  http://%s:%s  ******************', host, port);
@@ -42,6 +44,24 @@ function getErrorMessage(field) {
     };
     return response;
 }
+
+//Upload File to upload folder 
+app.post('/upload', async function (req, res) {
+if(req.files){
+  var file = req.files.filename,
+      filename= file.name;
+  file.mv("./upload/" + filename, async function(err){
+    if(err){
+      console.log(err)
+      res.send("error occurred")
+    }
+    else{
+     res.send("Uploaded Successfully")
+   }
+});
+}
+});
+
 
 //check for registered users
 app.post('/login', async function (req, res) {
@@ -101,6 +121,7 @@ app.post('/users', async function (req, res) {
 
 });
 
+
 // Invoke transaction on chaincode on target peers
 app.post('/invoke', async function (req, res) {
     try {
@@ -137,8 +158,7 @@ app.post('/invoke', async function (req, res) {
 
         const response_payload = {
             result: message,
-            error: null,
-            errorData: null
+
         }
         res.send(response_payload);
 
@@ -186,8 +206,7 @@ app.post('/query', async function (req, res) {
 
         const response_payload = {
             result: message,
-            error: null,
-            errorData: null
+           
         }
 
         res.send(response_payload);

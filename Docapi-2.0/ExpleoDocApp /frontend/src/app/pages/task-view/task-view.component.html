@@ -1,115 +1,163 @@
 <div class="centered-content">
   <div class="task-manager-container">
-
     <div class="sidebar has-background-white">
-
       <h1 class="title has-text-warn">
         Expleo-Docs
       </h1>
       <br>
-       <br>
+      <br>
       <div class="list-menu">
        <br>
-       <br>
+      <button class="button is-primary has-text-white is-medium" (click)="Documents()">Update Document </button>
+      &nbsp;&nbsp;&nbsp;
+      <button class="button is-primary has-text-white is-medium" routerLink="/lists/new-task">+ New Document</button>
 
-       
-       <button class="button is-primary has-text-white is-medium" (click)="Documents()">Show All Documents</button>
       </div>
-      
-    
 
- <button class="button is-primary has-text-white is-medium" routerLink="/lists/new-task">+ New Document</button>
     </div>
 
     <div class="task-list-container has-background-light">
-      <div *ngIf="tasks">
-        <div class="top-bar">
-          <h1 class="title has-text-primary">
-            Documents
-          </h1>
-          <div class="dropdown is-hoverable is-right">
-            <div class="dropdown-trigger">
-              <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
-                <span class="icon is-small">
-                  <i class="fas fa-cog" aria-hidden="true"></i>
-                </span>
-              </button>
-            </div>
-            <div class="dropdown-menu" id="dropdown-menu4" role="menu">
-              <div class="dropdown-content">
-              
-                <a [routerLink]="['/edit-list', selectedListId]" class="dropdown-item">
-                  Edit
-                </a>
-                <a (click)="onDeleteListClick()" class="dropdown-item has-text-danger">
-                  Delete
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-
-        <!-- Docs Elements -->
-        <div class="task" *ngFor="let task of tasks" (click)="onTaskClick(task)" [ngClass]="{ 'completed': task.completed }">
-          <div class="task-text">
-            <p>{{ task.title }}</p>
-          </div>
-          <div class="task-buttons">
-
-            <button class="button" [routerLink]="['/lists', selectedListId, 'edit-task', task._id]">
-              <div class="icon">
-                <i class="fas fa-edit"></i>
-              </div>
-            </button>
-
-            <button class="button is-danger" (click)="onDeleteTaskClick(task._id)" style="margin-left: 50px;">
-              <div class="icon">
-                <i class="fas fa-trash"></i>
-              </div>
-            </button>
-
-          </div>
-        </div>
-
-      
-      </div>
+     
       <br>
-<br>
-            <button class="circle-add-button" (click)="onLogoutButtonClicked()">
-            <img src="../../../assets/logout.png" class="has-text-white" >
-            </button>
-            <br>
-
-       <div class="search">
-    <input #searchInput type="search" placeholder="search here" class="search-input">
+       <br>
+       <button class="circle-add-button" (click)="onLogoutButtonClicked()">
+       <img src="../../../assets/logout.png" class="has-text-white" >
+       </button>
+        <br>
+        <div class="search">
+    <input #searchInput type="search" placeholder="search document by name.." class="search-input">
     <button class="button is-success has-text-white" (click)="onSearchButtonClicked(searchInput.value)">
    <i class="fa fa-search"></i> </button>
-</div>
-
-           <div >
+   </div>
+        
+     
+      <div *ngIf="!show">
+       <div *ngIf="!search">
        <br>
        <br>
-       {{documents}}
+       <table class="table table-trapped">
+       <thead>
+       <tr>
        
+    <th>Name</th>
+     <th>Sender</th>
+     <th>Receiver</th>
+     <th>Description</th>
+     <th>Comments</th>
+     <th>Attachment</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of userData">
+    <td>{{data.Record.name}}</td>
+    <td>{{data.Record.sender}}</td>
+    <td>{{data.Record.receiver}}</td>
+    <td>{{data.Record.subject}}</td>
+    <td>{{data.Record.msg}}</td>
+    <td>{{data.Record.msg}}</td>
+    
+     <td> <button class="btn btn-primary" (click)="onDownloadButtonClicked()">
+       <div class="icon">
+        <i class="fas fa-download"></i>
+       </div>
+     </button> </td>
 
+    <td> <button class="button is-danger" (click)="onDeleteButtonClicked(data.Record.name)">
+       <div class="icon">
+        <i class="fas fa-trash"></i>
+       </div>
+     </button> </td>
+
+    <td> <button class="btn btn-primary" (click)="onDocHistoryButtonClicked(data.Record.name)" (click)="show=true">
+       <div class="icon">
+        <i class="fas fa-history"></i>
+       </div>
+     </button> </td>
+
+    </tr>
+    </tbody>
+    </table>
       </div>
+      </div>
+  
 
-      <div *ngIf="!tasks">
-      <br>
-<br>
-<br>
-<br>
-   <br>
-<br>
-<br>
-<br>
+  <div *ngIf="show">
+    <div>
+       <br>
+       <br>
+       <table class="table table-trapped">
+       <thead>
+       <tr>
+    <th>TransactionsID</th>
+     <th>timestamp</th>
+     <th>IsDeleted</th>
+    
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of userData">
+    <td>{{data.TxId}}</td>
+    <td>{{data.Timestamp}}</td>
+    <td>{{data.IsDelete}}</td>
+    
+    </tr>
+    </tbody>
+    </table>
+      </div>  
+      </div>
+ 
+      
+     
+   <div *ngIf="!show">
+  <div *ngIf="search">
+    <div>
+       <br>
+       <br>
+       <table class="table table-trapped">
+       <thead>
+       <tr>
+    <th>Name</th>
+     <th>Sender</th>
+     <th>Receiver</th>
+     <th>Description</th>
+     <th>Comments</th>
+     <th>Attachment</th>
+    
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td>{{userData.name}}</td>
+    <td>{{userData.sender}}</td>
+    <td>{{userData.receiver}}</td>
+    <td>{{userData.subject}}</td>
+    <td>{{userData.msg}}</td>
+    
+    <td> <button class="btn btn-primary" (click)="onDownloadButtonClicked()">
+       <div class="icon">
+        <i class="fas fa-download"></i>
+       </div>
+     </button> </td>
+    
+    <td> <button class="button is-danger " (click)="onDeleteButtonClicked(userData.name)">
+       <div class="icon">
+        <i class="fas fa-trash"></i>
+       </div>
+     </button> </td>
+     
+     <td> <button class="btn btn-primary" (click)="onDocHistoryButtonClicked(userData.name)" (click)="show=true">
+       <div class="icon">
+        <i class="fas fa-history"></i>
+       </div>
+     </button> </td>
    
-        <h3 class="empty-state-text">There are no documents yet !</h3>
+    </tr>
+    </tbody>
+    </table>
+      </div>  
+      </div> 
+       </div> 
 
       </div>
-
-    </div>
-
-  </div>
-</div>
+      </div>
+      </div>
