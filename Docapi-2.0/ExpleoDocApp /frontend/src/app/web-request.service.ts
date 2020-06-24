@@ -148,13 +148,6 @@ DeleteDoc(name: string) {
         observe: 'response'
       });
   }
-
-uploadFile(file: File){
-    return this.http.post(this.uploadUrl,file, { headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        responseType : 'text'
-      })
-      })
-  }    
+  
 
 }

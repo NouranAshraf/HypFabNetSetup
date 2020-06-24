@@ -20,6 +20,7 @@ const query = require('./app/query')
 const upload = require("express-fileupload")
 app.options('*', cors());
 app.use(cors());
+app.use(upload());
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');  
@@ -31,7 +32,6 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
-app.use(upload());
 var server = http.createServer(app).listen(port, function () { console.log(`Server started on ${port}`) });
 logger.info('****************** SERVER STARTED ************************');
 logger.info('***************  http://%s:%s  ******************', host, port);
@@ -45,22 +45,35 @@ function getErrorMessage(field) {
     return response;
 }
 
-//Upload File to upload folder 
-app.post('/upload', async function (req, res) {
+//Download uploaded file from upload folder
+app.get('/download',  function (req, res) {
+let filename = req.body.filename;
+  res.send(__dirname, '..', 'uploads' + filename)
+  console.log("download Successfull");
+})
+
+
+//Upload File to uploads folder 
+app.post('/upload',  function (req, res) {
+console.log("======Starting upload====");
+console.log(req.files);
 if(req.files){
-  var file = req.files.filename,
+  var file = req.files[''],
       filename= file.name;
-  file.mv("./upload/" + filename, async function(err){
+       console.log(file);
+      console.log(filename);
+  file.mv("./uploads/" + filename, function(err){
     if(err){
       console.log(err)
       res.send("error occurred")
     }
     else{
      res.send("Uploaded Successfully")
+     console.log(res);
    }
-});
+})
 }
-});
+})
 
 
 //check for registered users

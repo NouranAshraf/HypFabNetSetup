@@ -13,6 +13,7 @@ import { HttpClient } from '@angular/common/http';
 export class NewTaskComponent implements OnInit {
  
  file: File= null;
+ filename: any;
   constructor( private route: ActivatedRoute, private router: Router, private webReqService : WebRequestService, private http: HttpClient) { }
 
   listId: string;
@@ -29,6 +30,7 @@ export class NewTaskComponent implements OnInit {
 
  
 onCreateButtonClicked(name: string, sender: string, receiver: string, message: string, subject: string) {
+alert(message);
  if(name && sender && receiver && message && subject){
     this.webReqService.createDoc(name, sender, receiver, message, subject).subscribe((res: HttpResponse<any>) => {
     if(res.status === 200){
@@ -41,12 +43,16 @@ onCreateButtonClicked(name: string, sender: string, receiver: string, message: s
 
 
 onFileChanged(event) {
-   console.log(event);
-    this.file = event.target.files[0]
-    this.webReqService.uploadFile(this.file).subscribe((res: HttpResponse<any>) => {
-      console.log(res);
-      alert(res);
-
+    this.file = event.target.files[0];
+    this.filename = this.file.name;
+     const uploadData = new FormData();
+  uploadData.append('', this.file, this.filename);
+     this.http.post('http://localhost:4000/upload', uploadData, {
+    reportProgress: true,
+    observe: 'events'
+  })
+    .subscribe(event => {
+      console.log(event);
     });
 
   }

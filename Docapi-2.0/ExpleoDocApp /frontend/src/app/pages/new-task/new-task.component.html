@@ -1,48 +1,48 @@
 <div class="centered-content">
+
   <div class="modal-box">
     <h1 class="title">
       Create a new document
     </h1>
   <div class="emailBox">
    <label for="name"></label>Name: <br>
-   <br>
+
     <input #nameInput class="input has-background-light is-medium" type="text" placeholder="Please provide receiving department...">
     </div>
-    <br>  
+
   <div class="emailBox">
    <label for="receiver"></label>To: <br>
    <br>
     <input #receiverInput class="input has-background-light is-medium" type="text" placeholder="Please provide receiving department...">
     </div>
-    <br>
+
     <div class="emailBox">  
     <label for="sender"></label>From: <br>
     <br>
     <input #senderInput class="input has-background-light is-medium" type="text" placeholder="Please provide sending department...">
     </div>
-    <br>
+
       <div class="emailBox">
    <label for="subject"></label>Subject: <br>
    <br>
     <input #subjectInput class="input has-background-light is-medium" type="text" placeholder="Please provide a brief description...">
     </div>
-    <br>
 
 
-       <div class="emailBox">
+
+       <div class="messageBox">
    <label for="message"></label>Body: <br>
    <br>
-    <input #messageInput class="input has-background-light is-medium" type="text" placeholder="Please enter your message here...">
+    <textarea #messageInput class="textarea" placeholder="Please Enter your message here..." ></textarea>
     </div>
     <br>
-    <br>
-    <input type="file" (change)="onFileChanged($event)">
+    <input  #fileInput type="file" (change)="onFileChanged($event)">
     <div>
     
     </div>
 
     
-      <br><br>
+      <br>
     <div class="buttons is-right">
       <button class="button is-medium" routerLink="/lists">Cancel</button>
       <button class="button is-primary has-text-white is-medium" (click)="onCreateButtonClicked(nameInput.value, senderInput.value, receiverInput.value, messageInput.value, subjectInput.value)">
