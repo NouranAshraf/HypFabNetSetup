@@ -18,6 +18,7 @@ export class LoginPageComponent implements OnInit {
 
 onLoginButtonClicked(username: string, orgName: string, password: string) {
 this.userName=username;
+this.webReqService.sendusername(username);
 console.log(this.userName);
  if(username && orgName && password){
     this.authService.login(username, orgName).subscribe((res: HttpResponse<any>) => {

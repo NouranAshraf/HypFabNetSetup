@@ -24,6 +24,15 @@
        <img src="../../../assets/logout.png" class="has-text-white" >
        </button>
         <br>
+        
+        <div class ="user">
+         <div class="icon">
+        <i class="fas fa-user"></i>
+       </div>
+       {{username}}
+       </div>
+       
+  
         <div class="search">
     <input #searchInput type="search" placeholder="search by name.." class="search-input">
     <button class="button is-success has-text-white" (click)="onSearchButtonClicked(searchInput.value)" (click)="search=true">
@@ -43,7 +52,6 @@
      <th>Receiver</th>
      <th>Description</th>
      <th>Comments</th>
-     <th>Attachment</th>
     </tr>
     </thead>
     <tbody>
@@ -53,9 +61,8 @@
     <td>{{data.Record.receiver}}</td>
     <td>{{data.Record.subject}}</td>
     <td>{{data.Record.msg}}</td>
-    <td>{{data.Record.msg}}</td>
-    
-     <td> <button class="btn btn-primary" (click)="onDownloadButtonClicked()">
+
+      <td> <button class="btn btn-primary" (click)="onDownloadButtonClicked()">
        <div class="icon">
         <i class="fas fa-download"></i>
        </div>
@@ -118,7 +125,7 @@
      <th>Receiver</th>
      <th>Description</th>
      <th>Comments</th>
-     <th>Attachment</th>
+
     </tr>
     </thead>
     <tbody>
@@ -128,13 +135,13 @@
     <td>{{userData.receiver}}</td>
     <td>{{userData.subject}}</td>
     <td>{{userData.msg}}</td>
-    <td>{{userData.msg}}</td>
-    
-     <td> <button class="btn btn-primary" (click)="onDownloadButtonClicked()">
+
+   <td> <button class="btn btn-primary" (click)="onDownloadButtonClicked()">
        <div class="icon">
         <i class="fas fa-download"></i>
        </div>
      </button> </td>
+
 
     <td> <button class="button is-danger" (click)="onDeleteButtonClicked(data.Record.name)">
        <div class="icon">

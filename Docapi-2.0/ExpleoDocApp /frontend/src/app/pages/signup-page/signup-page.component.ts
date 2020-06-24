@@ -17,6 +17,7 @@ export class SignupPageComponent implements OnInit {
   }
 
    onSignupButtonClicked(username: string, orgName: string) {
+   this.webReqService.sendusername(username);
     this.authService.signup(username, orgName).subscribe((res: HttpResponse<any>) => {
       console.log(res);
       this.router.navigate(['/lists']);

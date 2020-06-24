@@ -4,7 +4,7 @@
     display: flex;
     width: 100%;
     height: 100%;
-    max-width: 1500px;
+    max-width: 1300px;
     max-height: 700px;
     
 
@@ -155,10 +155,25 @@ position: absolute;
 
 .table table-trapped{
 background: white;
+
 }
 
+.img{
+width: 285px;
+height:95px;
+margin-top: 0px;
+position: absolute;
+top: 90px;
+left: 180px;
+bottom: 0px;
 
-
+}
+.user{
+position: absolute;
+top: 20px;
+right: 30px;
+bottom: 0px;
+}
 
 
 

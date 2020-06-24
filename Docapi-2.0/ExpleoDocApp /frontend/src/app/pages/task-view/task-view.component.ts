@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/auth.service';
 import { List } from 'src/app/models/list.model';
 import { HttpResponse } from '@angular/common/http';
 import { map } from "rxjs/operators"; 
-
+import {saveAs} from 'file-saver';
 
 
 
@@ -23,18 +23,18 @@ export class TaskViewComponent implements OnInit {
   userData:any;
  show : boolean = false;
  search : boolean = false;
-
+ filename : string;
   selectedListId: string;
 
   ngOnInit() {
    this.Documents();
- 
-    
+   this.filename=this.webReqService.file;
+   this.username=this.webReqService.loggeduser;
+
   }
   
    onDeleteButtonClicked(name: string) {
      this.webReqService.DeleteDoc(name).subscribe((res: any) => {
-     alert("Successfully Deleted Document" +" " + name +" "+ "Press update documents")
      this.router.navigate(['/lists']);
     });
   }
@@ -66,7 +66,13 @@ onSearchButtonClicked(name: string) {
               });
 }
 
-
+onDownloadButtonClicked() {
+           this.webReqService.downloadFile(this.filename)
+        .subscribe(
+            data => saveAs(data, this.filename),
+            error => console.error(error)
+        );
+}
 
 
 }

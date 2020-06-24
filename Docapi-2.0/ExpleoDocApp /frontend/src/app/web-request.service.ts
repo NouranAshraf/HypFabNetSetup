@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
-import { HttpHeaders } from '@angular/common/http';
-
+import { HttpHeaders, HttpResponse} from '@angular/common/http';
+import 'rxjs/Rx';
+import {Observable} from 'rxjs';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 
 @Injectable({
@@ -14,21 +16,21 @@ export class WebRequestService {
   readonly invokeUrl;
   readonly loginUrl;
   readonly registerUrl;
-  readonly uploadUrl;
+  readonly downloadUrl;
   private requestData;
   private user;
   readonly org;
   readonly peers;
   readonly chaincodeName;
   readonly channelName;
-
-
+  public file;
+  public loggeduser;
   constructor(private http: HttpClient) {
     this.queryUrl = "http://localhost:4000/query";
     this.invokeUrl = "http://localhost:4000/invoke";
     this.loginUrl = "http://localhost:4000/login";
     this.registerUrl = "http://localhost:4000/users";
-    this.uploadUrl = "http://localhost:4000/upload";
+    this.downloadUrl = "http://localhost:4000/download";
     this.user="nouran";
     this.org="Sales";
     this.chaincodeName="mydoc";
@@ -148,6 +150,25 @@ DeleteDoc(name: string) {
         observe: 'response'
       });
   }
+ 
+ downloadFile(file:String){
+  var body = {filename: file};
+        return this.http.post('http://localhost:4000/download',body,{
+            responseType : 'blob',
+            headers:new HttpHeaders().append('Content-Type','application/json')
+        });
+  }
   
+  sendmessage(filename: string){
+   this.file=filename;
+  
+  }
+  
+   sendusername(username: string){
+   this.loggeduser=username;
+  
+  }
+  
+
 
 }

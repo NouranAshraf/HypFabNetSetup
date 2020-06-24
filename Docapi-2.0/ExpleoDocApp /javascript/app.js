@@ -46,8 +46,9 @@ function getErrorMessage(field) {
 }
 
 //Download uploaded file from upload folder
-app.get('/download',  function (req, res) {
+app.post('/download',  function (req, res) {
 let filename = req.body.filename;
+console.log(filename);
   res.send(__dirname, '..', 'uploads' + filename)
   console.log("download Successfull");
 })

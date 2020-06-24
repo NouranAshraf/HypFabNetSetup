@@ -38,8 +38,6 @@ signup(email: string, password: string) {
 
 
   logout() {
-    this.removeSession();
-
     this.router.navigate(['/login']);
   }
 
