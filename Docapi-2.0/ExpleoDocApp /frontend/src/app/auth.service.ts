@@ -12,8 +12,8 @@ export class AuthService {
 
   constructor(private webReqService: WebRequestService, private router: Router, private http: HttpClient) { }
 
-  login(email: string, password: string) {
-    return this.webReqService.login(email, password).pipe(
+  login(email: string, orgName: string) {
+    return this.webReqService.login(email, orgName).pipe(
       shareReplay(),
       tap((res: any) => {
         // the auth tokens will be in the header of this response

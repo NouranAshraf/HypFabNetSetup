@@ -7,14 +7,15 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { SignupPageComponent } from './pages/signup-page/signup-page.component';
 
 import { EditTaskComponent } from './pages/edit-task/edit-task.component';
-
+import { MessageComponent } from './pages/message/message.component';
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginPageComponent },
-  { path: 'signup', component: SignupPageComponent },
+  { path: 'lists/message', component: MessageComponent },
+  { path: 'lists/signup', component: SignupPageComponent },
   { path: 'lists', component: TaskViewComponent },
   { path: 'lists/new-task', component: NewTaskComponent },
-  { path: 'lists/edit-task/:taskId', component: EditTaskComponent },
+  { path: 'lists/edit-task', component: EditTaskComponent },
 ];
 
 @NgModule({

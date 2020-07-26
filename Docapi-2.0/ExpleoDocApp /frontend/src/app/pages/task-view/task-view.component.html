@@ -7,160 +7,125 @@
       <br>
       <br>
       <div class="list-menu">
+    
+       <img class="sideimg" src="../../../assets/sidebar.jpg" >
        <br>
-      <button class="button is-primary has-text-white is-medium" (click)="Documents()">Update Document </button>
       &nbsp;&nbsp;&nbsp;
-      <button class="button is-primary has-text-white is-medium" routerLink="/lists/new-task">+ New Document</button>
-
+      <div *ngIf="orgname == sales || orgname==Sales">
+      <div class="img-overlay">
+      <button class="custom button" routerLink="/lists/new-task">+ New Document </button>
+</div>
+</div>
+      &nbsp;&nbsp;&nbsp;
+            <div class="img-overlay">
+      <button class="custom button" routerLink="/lists/signup"> Archived Documents</button>
+      </div>
       </div>
 
     </div>
 
     <div class="task-list-container has-background-light">
-     
+
+
+       <div>
+       <img class="user" src="../../../assets/user.png" >
+        <div class="useranddep">
+           {{username}}
+           </div>
+           <div class="useranddep1">
+            {{orgname}}
+
+          
+        </div>
+       </div>
+
+
       <br>
        <br>
+
+       
        <button class="circle-add-button" (click)="onLogoutButtonClicked()">
-       <img src="../../../assets/logout.png" class="has-text-white" >
+       <div class="icon">
+        <i class="fas fa-sign out"></i>
+       </div>
        </button>
         <br>
-        
-        <div class ="user">
-         <div class="icon">
-        <i class="fas fa-user"></i>
-       </div>
-       {{username}}
-       </div>
-       
-  
-        <div class="search">
-    <input #searchInput type="search" placeholder="search by name.." class="search-input">
-    <button class="button is-success has-text-white" (click)="onSearchButtonClicked(searchInput.value)" (click)="search=true">
-   <i class="fa fa-search"></i> </button>
-   </div>
-        
-      <div *ngIf="!show">
-       <div *ngIf="!search">
-       <br>
-       <br>
-       <table class="table table-trapped">
-       <thead>
-       <tr>
-       
-    <th>Name</th>
-     <th>Sender</th>
-     <th>Receiver</th>
-     <th>Description</th>
-     <th>Comments</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let data of userData">
-    <td>{{data.Record.name}}</td>
-    <td>{{data.Record.sender}}</td>
-    <td>{{data.Record.receiver}}</td>
-    <td>{{data.Record.subject}}</td>
-    <td>{{data.Record.msg}}</td>
+      
+  <div class="mat-elevation-z8">   
 
-      <td> <button class="btn btn-primary" (click)="onDownloadButtonClicked()">
+ <div class="search">
+    <input #searchInput (keyup)= "applyFilter($event.target.value)" placeholder="Filter ">
+  </div>  
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+  <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+  <!-- ID Column -->
+  <ng-container matColumnDef="id"> 
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.id}} </td>
+  </ng-container>
+
+  <!-- Client Name Column -->
+  <ng-container matColumnDef="clientname">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Client Name </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.name}} </td>
+  </ng-container>
+
+  <!-- Project Name Column -->
+  <ng-container matColumnDef="projectname">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Project Name </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.projname}} </td>
+  </ng-container>
+  
+    <!-- Attachment Column -->
+  <ng-container matColumnDef="attachment">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Attachment </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.attachname}} </td>
+  </ng-container>
+  
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> Actions </th>
+    <td mat-cell *matCellDef="let data">
+    
+
+    
+    <button class="btn btn-primary" (click)="onDownloadButtonClicked(data.Record.attachname)" >
        <div class="icon">
         <i class="fas fa-download"></i>
        </div>
-     </button> </td>
-
-    <td> <button class="button is-danger" (click)="onDeleteButtonClicked(data.Record.name)">
+     </button>
+     
+     <button class="btn btn-primary" routerLink="/lists/edit-task"  (click)="onEditButtonClicked(data.Record.id)" >
        <div class="icon">
-        <i class="fas fa-trash"></i>
+        <i class="fas fa-edit"></i>
        </div>
-     </button> </td>
-
-    <td> <button class="btn btn-primary" (click)="onDocHistoryButtonClicked(data.Record.name)" (click)="show=true">
+     </button>
+     
+     
+    <h1 *ngIf="orgname == Sales || orgname == sales"> 
+   <button mat-raised-button class="custom button" (click)="onArchivedButtonClicked(data.Record.id, closureInput.value)" (click)="archive=true">
        <div class="icon">
-        <i class="fas fa-history"></i>
+        <i class="fas fa-archive"></i>
        </div>
-     </button> </td>
+     </button>
 
-    </tr>
-    </tbody>
-    </table>
-      </div>
-      </div>
+    <input #closureInput class= "closure" type="text" placeholder= "write closure reason ">
+</h1>
+
+
+ </td>
+  </ng-container>
   
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="getRecord(row)" ></tr>
 
-  <div *ngIf="show">
-    <div>
-       <br>
-       <br>
-       <table class="table table-trapped">
-       <thead>
-       <tr>
-    <th>TransactionsID</th>
-     <th>timestamp</th>
-     <th>IsDeleted</th>
-    
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let data of userData">
-    <td>{{data.TxId}}</td>
-    <td>{{data.Timestamp}}</td>
-    <td>{{data.IsDelete}}</td>
-    
-    </tr>
-    </tbody>
-    </table>
-      </div>  
-      </div>
- 
- <div *ngIf="!show">
-       <div *ngIf="search">
-       <br>
-       <br>
-       <table class="table table-trapped">
-       <thead>
-       <tr>
-       
-    <th>Name</th>
-     <th>Sender</th>
-     <th>Receiver</th>
-     <th>Description</th>
-     <th>Comments</th>
-
-    </tr>
-    </thead>
-    <tbody>
-
-    <td>{{userData.name}}</td>
-    <td>{{userData.sender}}</td>
-    <td>{{userData.receiver}}</td>
-    <td>{{userData.subject}}</td>
-    <td>{{userData.msg}}</td>
-
-   <td> <button class="btn btn-primary" (click)="onDownloadButtonClicked()">
-       <div class="icon">
-        <i class="fas fa-download"></i>
-       </div>
-     </button> </td>
+</table>
 
 
-    <td> <button class="button is-danger" (click)="onDeleteButtonClicked(data.Record.name)">
-       <div class="icon">
-        <i class="fas fa-trash"></i>
-       </div>
-     </button> </td>
 
-    <td> <button class="btn btn-primary" (click)="onDocHistoryButtonClicked(data.Record.name)" (click)="show=true">
-       <div class="icon">
-        <i class="fas fa-history"></i>
-       </div>
-     </button> </td>
-
-
-    </tbody>
-    </table>
-      </div>
-      </div>
-  
+</div>
 
       </div>
       </div>

@@ -1,56 +1,77 @@
 <div class="centered-content">
+
   <div class="modal-box">
     <h1 class="title">
-      Edit Document
+      View Document
     </h1>
     
-    <div class="emailBox">
-   <label for="name"></label>Name: <br>
-   <br>
-    <input #nameInput class="input has-background-light is-medium" type="text" placeholder="Please provide receiving department...">
-    </div>
-    <br>  
+  <mat-card>
+    <mat-label> Document ID:  </mat-label> 
+   {{userData.id}}
+    </mat-card>
     
-  <div class="emailBox">
-   <label for="receiver"></label>To: <br>
-   <br>
-    <input #receiverInput class="input has-background-light is-medium" type="text" placeholder="Please provide receiving department...">
-    </div>
-    <br>
-    <div class="emailBox">  
-    <label for="sender"></label>From: <br>
-    <br>
-    <input #senderInput class="input has-background-light is-medium" type="text" placeholder="Please provide sending department...">
-    </div>
-    <br>
-      <div class="emailBox">
-   <label for="subject"></label>Subject: <br>
-   <br>
-    <input #subjectInput class="input has-background-light is-medium" type="text" placeholder="Please provide a brief description...">
-    </div>
-    <br>
-      <div class="emailBox">
-   <label for="message"></label>Body: <br>
-   <br>
-    <input #messageInput class="input has-background-light is-medium" type="text" placeholder="Please enter your message here...">
-    </div>
-    <br>
+<br>
+  <mat-card>
+    <mat-label> Client Name: </mat-label> 
+   {{userData.name}}
+  </mat-card>
+<br>
 
+  <mat-card>
+    <mat-label> Project Name: </mat-label> 
+   {{userData.projname}}
+  </mat-card>
+ <br>
 
-    <br><br>
+  <mat-card>
+    <mat-label> Sender: </mat-label> 
+   {{userData.sender}}
+  </mat-card>
+<br>
+
+  <mat-card>
+    <mat-label> Receiver: </mat-label> 
+   {{userData.receiver}}
+  </mat-card>
+  <br>
+  <mat-card>
+    <mat-label> Description: </mat-label> 
+   {{userData.subject}}
+  </mat-card>
+<br>
+
+  <mat-card>
+    <mat-label> Comments: </mat-label> 
+   {{userData.msg}}
+  </mat-card>
+
+<br>
+  <mat-card>
+    <mat-label> Attachment: </mat-label> 
     
-     <div>
-    <input type="file" value="upload" accept="./*" (change)=fileUploader($event)>
+    {{userData.attachname}}
+      </mat-card>
+      
+<br>
+
+ <label>Next Action:</label> <input #actionInput type="text" placeholder= "Enter Next Actions.." (click)="onNextAction(actionInput.value)">         
+<br>
+<br>
+
+  <mat-card>
+    <mat-label> RequiredActions: </mat-label> 
+     {{nextActions}}
+      </mat-card>      
+   
+    <div>
+    
     </div>
 
-    
-    
-    
-      <br><br>
+            &nbsp;&nbsp;&nbsp;
     <div class="buttons is-right">
-      <button class="button is-medium" routerLink="/lists">Cancel</button>
-       <button class="button is-primary has-text-white is-medium" (click)="onSaveButtonClicked(nameInput.value, senderInput.value, receiverInput.value, messageInput.value, subjectInput.value)">
-      Save
+
+      <button class="button is-medium" routerLink="/lists" >
+      Back
       </button>
     </div>
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Params, ActivatedRoute, Router } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
 import { WebRequestService} from 'src/app/web-request.service';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @Component({
   selector: 'app-edit-task',
@@ -11,29 +12,49 @@ import { WebRequestService} from 'src/app/web-request.service';
 export class EditTaskComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router, private webReqService : WebRequestService) { }
-
-  taskId: string;
-  listId: string;
-
-  
+  EditID: string;
+  userData: any;
+  nextActions: any;
+  id: string;
+  filename: string;
   ngOnInit() {
-    this.route.params.subscribe(
-      (params: Params) => {
-        this.taskId = params.taskId;
-        this.listId = params.listId;
-      }
-    )
-  }
 
-  onSaveButtonClicked(name: string, sender: string, receiver: string, message: string, subject: string) {
- if(name && sender && receiver&& message &&subject){
-    this.webReqService.createDoc(name, sender, receiver, message, subject).subscribe((res: HttpResponse<any>) => {
-    if(res.status === 200){
-      console.log(res);
-      this.router.navigate(['/lists']);}
-    });
+ this.EditID=localStorage.getItem('id');
+    this.getEditedDocument();
+
     
   }
+
+getEditedDocument(){
+
+this.webReqService.getSearch(this.EditID).subscribe((res: any) => {
+              this.userData=res.body.result;
+              this.id= this.userData.id;
+});
+
+
+
+}
+
+onNextAction(nextAction: string){
+var next="next";
+this.filename= "nextActions.json";
+this.nextActions= {"id" : this.id, "nextAction" : nextAction};
+if(nextAction){
+this.webReqService.Store(this.nextActions, this.filename).subscribe((res: any) => {
+    });
+
+}
+
+}
+
+RetrieveActions(){
+  this.filename="nextActions.json";
+  this.webReqService.Retrieve(this.filename).subscribe((res: any) => {
+            this.nextActions= JSON.stringify(res.body);
+          
+    });
+
 }
 
 

@@ -1,47 +1,116 @@
 <div class="centered-content">
-  <div class="white-box">
-    <img src="assets/index.jpeg">
-  <br>
-<br>
-    <h1 class="title has-text-primary">Sign up</h1>
-    
-    <div class="field">
-      <p class="control has-icons-left has-icons-right">
-        <input #usernameInput class="input has-background-light" type="username" placeholder="username">
-        <span class="icon is-small is-left">
-          <i class="fas fa-envelope"></i>
-        </span>
-      </p>
-    </div>
-    <div class="field">
-      <p class="control has-icons-left">
-        <input #pwInput class="input has-background-light" type="password" placeholder="Password">
-        <span class="icon is-small is-left">
-          <i class="fas fa-lock"></i>
-        </span>
-      </p>
-    </div>
-    
-      <div class="field">
-      <p class="control has-icons-left has-icons-right">
-        <input #depInput class="input has-background-light" type="department" placeholder="Department">
-        <span class="icon is-small is-left">
-          <i class="fas fa-envelope"></i>
-        </span>
-      </p>
-    </div>
-    <br>
-    
-    <div class="field" style="display: flex; justify-content: flex-end;">
-      <p class="control">
-        <button class="button is-success has-text-white" (click)="onSignupButtonClicked(usernameInput.value, depInput.value)">
-          Sign up
-        </button>
-      </p>
-    </div>
-    <br>
+  <div class="task-manager-container">
+    <div class="task-list-container has-background-light">
+   
+      <h1 class="title has-text-warn">
+        Archived Documents
+      </h1>
 
-    <p class="has-text-grey">Already got an account? <a routerLink="/login">Login</a> now!</p>
 
-  </div>
+
+      
+  <div class="mat-elevation-z8">   
+
+ <div class="search">
+    <input #searchInput (keyup)= "applyFilter($event.target.value)" placeholder="Filter ">
+  </div>  
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+  <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+  <!-- ID Column -->
+  <ng-container matColumnDef="id"> 
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.id}} </td>
+  </ng-container>
+
+  <!-- Client Name Column -->
+  <ng-container matColumnDef="clientname">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Client Name </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.name}} </td>
+  </ng-container>
+
+  <!-- Project Name Column -->
+  <ng-container matColumnDef="projectname">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Project Name </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.projname}} </td>
+  </ng-container>
+
+  <!-- Sender Column -->
+  <ng-container matColumnDef="sender">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Sender </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.sender}} </td>
+  </ng-container>
+  
+    <!-- Receiver Column -->
+  <ng-container matColumnDef="receiver">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Receiver </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.receiver}} </td>
+  </ng-container>
+  
+  
+    <!-- Description Column -->
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.subject}} </td>
+  </ng-container>
+  
+    <!-- Comments Column -->
+  <ng-container matColumnDef="comments">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Comments </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.msg}} </td>
+  </ng-container>
+  
+    <!-- Attachment Column -->
+  <ng-container matColumnDef="attachment">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Attachment </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.attachname}} </td>
+  </ng-container>
+  
+   <!-- Closure Column -->
+  <ng-container matColumnDef="closurereason">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Closure Reason </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.closurereason}} </td>
+  </ng-container>
+  
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> Actions </th>
+    <td mat-cell *matCellDef="let data">
+
+      <h1 class="closedword" >
+        CLOSED
+      </h1>
+
+    <button class="btn btn-primary" (click)="onDownloadButtonClicked(data.Record.attachname)" >
+       <div class="icon">
+        <i class="fas fa-download"></i>
+       </div>
+     </button>
+     
+     <button mat-raised-button (click)="onDeleteButtonClicked(data.Record.id)">
+       <div class="icon">
+        <i class="fas fa-trash"></i>
+       </div>
+     </button>
+     <br>
+
+ </td>
+  </ng-container>
+  
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>
+
+
+
 </div>
+ <div *ngIf="!dataSource">
+        <h3 class="empty-state-text">There are no archives yet !</h3>
+        </div>
+
+      </div>
+      
+      </div>
+      </div>

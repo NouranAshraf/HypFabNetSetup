@@ -20,11 +20,14 @@ type Chaincode struct {
 
 //describes basic details of what makes up a doc
 type Doc struct {
+    ID              string `json:"id"`
 	Name            string `json:"name"`
+	ProjName        string `json:"projname"`
 	Sender          string `json:"sender"`
 	Receiver        string `json:"receiver"`
+	Subject        string `json:"subject"`
 	Msg             string `json:"msg"`
-    AttachFile      string `json:"attachfile"`
+    AttachName      string `json:"attachname"`
        
 }
 
@@ -53,17 +56,14 @@ func (t *Chaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	} else if function == "DeleteDoc" { 
 		return t.DeleteDoc(stub, args)
 	//Search docs using docname
-	} else if function == "QueryDocByName" { 
-		return t.QueryDocByName(stub, args)
+	} else if function == "QueryDocByID" { 
+		return t.QueryDocByID(stub, args)
 	//Retrieves all prev values for a doc	
 	} else if function == "DocValueHistory" { 
 		return t.DocValueHistory(stub, args)
 	//Retrieves  a range of docs	
 	} else if function == "GetDocsByRange" { 
 		return t.GetDocsByRange(stub, args)
-	//Search Docs using sender
-        } else if function == "QueryDocBySender" { 
-		return t.QueryDocBySender(stub, args)
 	//retrieves all docs
 	} else if function == "GetAllDocs" { 
 		return t.GetAllDocs(stub)
@@ -79,8 +79,8 @@ func (t *Chaincode) InitDoc(stub shim.ChaincodeStubInterface, args []string) pb.
 
 	var err error
 
-	//   0       1          2           3       4    
-	// "name", "sender", "receiver", "msg", "attachfile"
+	//   0   1        2           3       4          5        6       7
+	// ID", projname", name,  "sender", "receiver", "subject", "msg", "attachname"
 	if len(args) != 8 {
 		return shim.Error("Incorrect number of arguments. Expecting 8")
 	}
@@ -102,35 +102,47 @@ func (t *Chaincode) InitDoc(stub shim.ChaincodeStubInterface, args []string) pb.
 	if len(args[4]) <= 0 {
 		return shim.Error("5th argument must be a non-empty string")
 	}
+	if len(args[5]) <= 0 {
+		return shim.Error("6th argument must be a non-empty string")
+	}
+	if len(args[6]) <= 0 {
+		return shim.Error("7th argument must be a non-empty string")
+	}
+	if len(args[7]) <= 0 {
+		return shim.Error("8th argument must be a non-empty string")
+	}			
 
 
-	DocName := args[0]
-	sender := strings.ToLower(args[1])
-	receiver := strings.ToLower(args[2])
-	msg := strings.ToLower(args[3])			
-	attachfile := strings.ToLower(args[4])
+	id := args[0]
+	DocName := strings.ToLower(args[1])
+	projname := strings.ToLower(args[2])
+	sender := strings.ToLower(args[3])
+	receiver := strings.ToLower(args[4])
+	subject := strings.ToLower(args[5])
+	msg := strings.ToLower(args[6])			
+	attachname := strings.ToLower(args[7])
 
 
 
 	// ==== Check if doc already exists ====
-	DocAsBytes, err := stub.GetState(DocName)
+	DocAsBytes, err := stub.GetState(id)
 	if err != nil {
 		return shim.Error("Failed to get doc: " + err.Error())
 	} else if DocAsBytes != nil {
-		fmt.Println("This doc already exists: " + DocName)
-		return shim.Error("This doc already exists: " + DocName)
+		fmt.Println("This doc already exists: " + id)
+		return shim.Error("This doc already exists: " + id)
 	}
 
 	fmt.Println("-start init doc")
 	// ==== Create doc object and marshal to JSON ====
-	Doc := &Doc{ DocName, sender, receiver, msg,attachfie}
+	Doc := &Doc{ id, DocName, projname, sender, receiver, subject, msg, attachname}
 	DocJSONasBytes, err := json.Marshal(Doc)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
 	// === Save Doc to state ===
-	err = stub.PutState(DocName, DocJSONasBytes)
+	err = stub.PutState(id, DocJSONasBytes)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -145,11 +157,11 @@ func (t *Chaincode) DeleteDoc(stub shim.ChaincodeStubInterface, args []string) p
 	if len(args) != 1 {
 		return shim.Error("Incorrect number of arguments. Expecting 1")
 	}
-	DocName := args[0]
+	id := args[0]
 
 	fmt.Println("-start delete doc")
 
-	err = stub.DelState(DocName) //remove the Doc from state
+	err = stub.DelState(id) //remove the Doc from state
 	if err != nil {
 		return shim.Error("Failed to delete state:" + err.Error())
 	}
@@ -158,53 +170,34 @@ func (t *Chaincode) DeleteDoc(stub shim.ChaincodeStubInterface, args []string) p
 }
 
 
-// QueryDocByName queries for docs based on a passed in name.
-func (t *Chaincode) QueryDocByName(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	var DocName string // Entities
+// QueryDocByID queries for docs based on a passed in name.
+func (t *Chaincode) QueryDocByID(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+	var id string // Entities
 	var err error
 
 	if len(args) != 1 {
 		return shim.Error("Incorrect number of arguments. Expecting name of the person to query")
 	}
 
-	DocName = args[0]
+	id = args[0]
 
 	// Get the state from the ledger
-	Docbytes, err := stub.GetState(DocName)
+	Docbytes, err := stub.GetState(id)
 	if err != nil {
-		jsonResp := "{\"Error\":\"Failed to get state for " + DocName + "\"}"
+		jsonResp := "{\"Error\":\"Failed to get state for " + id + "\"}"
 		return shim.Error(jsonResp)
 	}
 
 	if Docbytes == nil {
-		jsonResp := "{\"Error\":\"Nil doc for " +DocName+ "\"}"
+		jsonResp := "{\"Error\":\"Nil doc for " +id+ "\"}"
 		return shim.Error(jsonResp)
 	}
 
-	jsonResp := "{\"Sender\":\"" + DocName + "\",\"DocName\":\"" + string(Docbytes) + "\"}"
+	jsonResp := "{\"Sender\":\"" + id + "\",\"DocName\":\"" + string(Docbytes) + "\"}"
 	fmt.Printf("Query Response:%s\n", jsonResp)
 	return shim.Success(Docbytes)
 }
 
-// QueryDocBySender queries for docs based on a passed in sender. rich query (CouchDB)
-func (t *Chaincode) QueryDocBySender(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-
-	//   0
-	// "sender"
-	if len(args) < 1 {
-		return shim.Error("Incorrect number of arguments. Expecting 1")
-	}
-
-	sender := strings.ToLower(args[0])
-
-	queryString := fmt.Sprintf("{\"selector\":{\"DocName\":\"Doc\",\"sender\":\"%s\"}}", sender)
-
-	queryResults, err := getQueryResultForQueryString(stub, queryString)
-	if err != nil {
-		return shim.Error(err.Error())
-	}
-	return shim.Success(queryResults)
-}
 
 // getQueryResultForQueryString executes the passed in query string.
 func getQueryResultForQueryString(stub shim.ChaincodeStubInterface, queryString string) ([]byte, error) {
@@ -233,11 +226,11 @@ func (t *Chaincode) DocValueHistory(stub shim.ChaincodeStubInterface, args []str
 		return shim.Error("Incorrect number of arguments. Expecting 1")
 	}
 
-	DocName := args[0]
+	id := args[0]
 
-	fmt.Printf("- start getHistoryForDoc: %s\n", DocName)
+	fmt.Printf("- start getHistoryForDoc: %s\n", id)
 
-	resultsIterator, err := stub.GetHistoryForKey(DocName)
+	resultsIterator, err := stub.GetHistoryForKey(id)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -295,8 +288,8 @@ func (t *Chaincode) DocValueHistory(stub shim.ChaincodeStubInterface, args []str
 // GetAllDocs returns all Docs found in world state
 func (t *Chaincode) GetAllDocs(stub shim.ChaincodeStubInterface) pb.Response {
 
-	startKey := "Doc0"
-	endKey := "Doc99"
+	startKey := "0"
+	endKey := "99"
 
 	resultsIterator, err := stub.GetStateByRange(startKey, endKey)
 	if err != nil {
@@ -371,4 +364,4 @@ func constructQueryResponseFromIterator(resultsIterator shim.StateQueryIteratorI
 	buffer.WriteString("]")
 
 	return &buffer, nil
-}
+} 

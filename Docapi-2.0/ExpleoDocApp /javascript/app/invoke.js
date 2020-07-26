@@ -46,14 +46,14 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
         const network = await gateway.getNetwork('mainchannel');
 
         // Get the contract from the network.
-        const contract = network.getContract('mydoc');
+        const contract = network.getContract('doc');
 
         // Evaluate the specified transaction.
         let result;
         let message;
         
        if (fcn == "InitDoc"){
-        result= await contract.submitTransaction('InitDoc', args[0], args[1], args[2], args[3], args[4]);
+        result= await contract.submitTransaction('InitDoc', args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
         console.log(result.toString())
         message = `Successfully modified offer state with key ${args[0]}`
 //         return message
@@ -68,8 +68,8 @@ const invokeTransaction = async (channelName, chaincodeName, fcn, args, username
 //        result = JSON.parse(result.toString());
 //        return result
 
-        }else if (fcn == "QueryDocByName") {
-        result= await contract.submitTransaction('QueryDocByName', args[0]);
+        }else if (fcn == "QueryDocByID") {
+        result= await contract.submitTransaction('QueryDocByID', args[0]);
         console.log(result.toString())
         message = `Successfully modified offer state with key ${args[0]}`
 //        return message

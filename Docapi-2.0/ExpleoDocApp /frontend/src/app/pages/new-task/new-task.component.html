@@ -4,35 +4,46 @@
     <h1 class="title">
       Create a new document
     </h1>
-  <div class="emailBox">
-   <label for="name"></label>Name: <br>
+    
+    <div class="emailBox">
+   <label for="name"></label> Document ID: <br>
 
-    <input #nameInput class="input has-background-light is-medium" type="text" placeholder="Please provide receiving department...">
+    <input #idInput class="input has-background-light is-medium" type="text" placeholder="Please provide document id number ..." (click)="Onidclick()">
+    </div>
+
+    
+  <div class="emailBox">
+   <label for="name"></label>Client Name: <br>
+
+    <input #clientnameInput class="input has-background-light is-medium" type="text" placeholder="Please provide client name...">
     </div>
 
   <div class="emailBox">
+   <label for="projname"></label>Project Name: <br>
+    <input #projnameInput class="input has-background-light is-medium" type="text" placeholder="Please provide project name...">
+    </div>
+ 
+  <div class="emailBox">
    <label for="receiver"></label>To: <br>
-   <br>
+
     <input #receiverInput class="input has-background-light is-medium" type="text" placeholder="Please provide receiving department...">
     </div>
 
     <div class="emailBox">  
     <label for="sender"></label>From: <br>
-    <br>
+
     <input #senderInput class="input has-background-light is-medium" type="text" placeholder="Please provide sending department...">
     </div>
 
       <div class="emailBox">
    <label for="subject"></label>Subject: <br>
-   <br>
+ 
     <input #subjectInput class="input has-background-light is-medium" type="text" placeholder="Please provide a brief description...">
     </div>
 
-
-
        <div class="messageBox">
    <label for="message"></label>Body: <br>
-   <br>
+
     <textarea #messageInput class="textarea" placeholder="Please Enter your message here..." ></textarea>
     </div>
     <br>
@@ -44,7 +55,7 @@
       <br>
     <div class="buttons is-right">
       <button class="button is-medium" routerLink="/lists">Cancel</button>
-      <button class="button is-primary has-text-white is-medium" (click)="onCreateButtonClicked(nameInput.value, senderInput.value, receiverInput.value, messageInput.value, subjectInput.value)">
+      <button class="button is-primary has-text-white is-medium" (click)="onCreateButtonClicked(idInput.value, clientnameInput.value, projnameInput.value, senderInput.value, receiverInput.value, subjectInput.value, messageInput.value)">
       Create
       </button>
     </div>

@@ -12,8 +12,9 @@ const formidable= require('formidable')
 
 const host = process.env.HOST || constants.host;
 const port = process.env.PORT || constants.port;
+var fs = require('fs');
 
-
+const path = require('path');
 const helper = require('./app/helper')
 const invoke = require('./app/invoke')
 const query = require('./app/query')
@@ -45,11 +46,19 @@ function getErrorMessage(field) {
     return response;
 }
 
+
+
+
+
+
+
 //Download uploaded file from upload folder
 app.post('/download',  function (req, res) {
 let filename = req.body.filename;
+let filepath= path.resolve(__dirname, '..','javascript','uploads', filename)
 console.log(filename);
-  res.send(__dirname, '..', 'uploads' + filename)
+
+  res.download(filepath, filename);
   console.log("download Successfull");
 })
 
@@ -75,6 +84,51 @@ if(req.files){
 })
 }
 })
+
+//Store Archived Documents in File
+app.post('/store',  function (req, res) {
+console.log("======Starting store====");
+var row = req.body.row;
+console.log('row:', row)
+var filename=req.body.filename;
+var data = JSON.stringify(row);
+let filepath= path.resolve(__dirname, '..','javascript',filename )
+
+if (fs.existsSync(filepath)) {
+fs.appendFileSync(filename, ",", finished);
+fs.appendFileSync(filename, data, finished);
+res.send("file exists and appended row")
+
+}else{
+fs.writeFileSync(filename, "[", finished);
+fs.appendFileSync(filename, data, finished);
+res.send("created file and added row")
+}
+function finished(err){
+console.log("all set");
+
+}
+
+})
+
+//retrieve Archived Documents from File
+app.post('/retrieve',  function (req, res) {
+console.log("======Starting retrieve====");
+var filename=req.body.filename;
+fs.readFile(filename, function (err, data) {
+    if(!data){
+    console.log("no archived docs found");
+    res.send("no archived docs found");
+    }else{
+    var row = data + "]";
+    data =JSON.parse(row);
+console.log("fetched all archives" + data);
+      res.send(data);  
+}
+});
+
+})
+
 
 
 //check for registered users

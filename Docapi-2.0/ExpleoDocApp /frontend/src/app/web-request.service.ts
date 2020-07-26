@@ -17,6 +17,8 @@ export class WebRequestService {
   readonly loginUrl;
   readonly registerUrl;
   readonly downloadUrl;
+  readonly storeUrl;
+  readonly retrieveUrl;
   private requestData;
   private user;
   readonly org;
@@ -25,18 +27,25 @@ export class WebRequestService {
   readonly channelName;
   public file;
   public loggeduser;
+   dataRow:any;
+  sharedData: string;
+  sharedUsername: string;
+  sharedOrgname: string;
+  sharedEditID: string;
   constructor(private http: HttpClient) {
     this.queryUrl = "http://localhost:4000/query";
     this.invokeUrl = "http://localhost:4000/invoke";
     this.loginUrl = "http://localhost:4000/login";
     this.registerUrl = "http://localhost:4000/users";
     this.downloadUrl = "http://localhost:4000/download";
+    this.storeUrl = "http://localhost:4000/store";
+    this.retrieveUrl= "http://localhost:4000/retrieve";
     this.user="nouran";
     this.org="Sales";
     this.chaincodeName="mydoc";
     this.channelName="mainchannel";
     this.peers=["peer0.Sales.sqs.com","peer0.Resorcing.sqs.com","peer0.EngagementManagement.sqs.com"];
-    this.requestData='{"fcn": "GetAllDocs","peers": ["peer0.Sales.sqs.com","peer0.Resorcing.sqs.com","peer0.EngagementManagement.sqs.com"],"chaincodeName":"mydoc","channelName": "mainchannel","args": [""], "userName":"nora","orgName":"Sales"}';
+ 
   }
 
 
@@ -62,14 +71,26 @@ export class WebRequestService {
   }
   
 getDocuments(){
-    return this.http.post(this.queryUrl,this.requestData , { headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        responseType : 'text'
-      })
-      })
+    let userName=this.user;
+    let orgName=this.org;
+    let peers=this.peers;
+    let chaincodeName=this.chaincodeName;
+    let channelName=this.channelName;
+    let fcn = "GetAllDocs";
+    return this.http.post(`${this.queryUrl}`, {
+      "userName" : userName,
+      "orgName" : orgName,
+      "peers" : peers,
+      "channelName" : channelName,
+      "chaincodeName" : chaincodeName,
+      "args" :[""],
+      "fcn" : fcn
+    }, {
+        observe: 'response'
+      });
   }    
 
-createDoc(name: string, sender: string, receiver: string, message: string, subject: string) {
+createDoc(id: string, name: string, projname: string, sender: string, receiver: string, subject: string, message: string, attachname: string) {
     let userName=this.user;
     let orgName=this.org;
     let peers=this.peers;
@@ -82,7 +103,7 @@ createDoc(name: string, sender: string, receiver: string, message: string, subje
       "peers" : peers,
       "channelName" : channelName,
       "chaincodeName" : chaincodeName,
-      "args" :[name, sender, receiver, message, subject],
+      "args" :[id, name, projname, sender, receiver, subject, message, attachname],
       "fcn" : fcn
     }, {
         observe: 'response'
@@ -90,41 +111,47 @@ createDoc(name: string, sender: string, receiver: string, message: string, subje
       });
   }
   
-  getSearch(name: string) {
+  getSearch(ID: string) {
+   if(ID || ID == "0" || !(ID="undefined")){
     let userName=this.user;
     let orgName=this.org;
     let peers=this.peers;
     let chaincodeName=this.chaincodeName;
     let channelName=this.channelName;
-    let fcn = "QueryDocByName";
+    let fcn = "QueryDocByID";
     return this.http.post(`${this.queryUrl}`, {
       "userName" : userName,
       "orgName" : orgName,
       "peers" : peers,
       "channelName" : channelName,
       "chaincodeName" : chaincodeName,
-      "args" :[name],
+      "args" :[ID],
       "fcn" : fcn
     }, {
         observe: 'response'
       });
+   }else{
+    alert("id is empty");
+      
+        } 
   }
 
 
-DeleteDoc(name: string) {
+DeleteDoc(id: string) {
     let userName=this.user;
     let orgName=this.org;
     let peers=this.peers;
     let chaincodeName=this.chaincodeName;
     let channelName=this.channelName;
     let fcn = "DeleteDoc";
+    alert(id);
     return this.http.post(`${this.invokeUrl}`, {
       "userName" : userName,
       "orgName" : orgName,
       "peers" : peers,
       "channelName" : channelName,
       "chaincodeName" : chaincodeName,
-      "args" :[name],
+      "args" :[id],
       "fcn" : fcn
     }, {
         observe: 'response'
@@ -169,6 +196,28 @@ DeleteDoc(name: string) {
   
   }
   
+  
+  Store(row : string, filename: string) {
+    return this.http.post(`${this.storeUrl}`, {
+
+      "row" : row,
+      "filename" : filename
+    }, {
+        observe: 'response'
+      });
+  }
+  
+  Retrieve(filename: string) {
+   return this.http.post(`${this.retrieveUrl}`, {
+
+      "filename" : filename
+    }, {
+        observe: 'response'
+      });
+  
+  
+  }
+ 
 
 
 }

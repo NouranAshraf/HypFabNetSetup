@@ -45,13 +45,13 @@ const query = async (channelName, chaincodeName, args, fcn, username, orgName) =
         const network = await gateway.getNetwork('mainchannel');
 
         // Get the contract from the network.
-        const contract = network.getContract('mydoc');
+        const contract = network.getContract('doc');
 
         // Evaluate the specified transaction.
         let result;
         
          if (fcn == "InitDoc"){
-        result= await contract.evaluateTransaction('InitDoc', args[0], args[1], args[2], args[3], args[4]);
+        result= await contract.evaluateTransaction('InitDoc', args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
         console.log(result.toString())
         result = JSON.parse(result.toString());
         return result
@@ -62,14 +62,8 @@ const query = async (channelName, chaincodeName, args, fcn, username, orgName) =
         result = JSON.parse(result.toString());
         return result
 
-        }else if (fcn == "QueryDocByName") {
-        result= await contract.evaluateTransaction('QueryDocByName', args[0]);
-        console.log(result.toString())
-        result = JSON.parse(result.toString());
-        return result
-
-        }else if (fcn == "QueryDocBySender") {
-        result=  await contract.evaluateTransaction('QueryDocBySender', args[0]);
+        }else if (fcn == "QueryDocByID") {
+        result= await contract.evaluateTransaction('QueryDocByID', args[0]);
         console.log(result.toString())
         result = JSON.parse(result.toString());
         return result
