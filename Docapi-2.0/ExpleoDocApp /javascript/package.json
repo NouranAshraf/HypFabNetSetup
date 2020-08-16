@@ -15,7 +15,7 @@
     "express": "^4.17.1",
     "express-bearer-token": "^2.4.0",
     "express-fileupload": "^1.1.7-alpha.3",
-    "express-jwt": "^5.3.3",
+    "express-jwt": "^6.0.0",
     "fabric-ca-client": "^2.1.0",
     "fabric-client": "^1.4.8",
     "fabric-network": "^2.1.0",
