@@ -21,7 +21,7 @@ export class EditTaskComponent implements OnInit {
 
  this.EditID=localStorage.getItem('id');
     this.getEditedDocument();
-
+this.nextActions= localStorage.getItem('comment');
     
   }
 
@@ -29,31 +29,16 @@ getEditedDocument(){
 
 this.webReqService.getSearch(this.EditID).subscribe((res: any) => {
               this.userData=res.body.result;
-              this.id= this.userData.id;
+              this.id= JSON.stringify(this.userData.id);
 });
 
 
 
 }
 
-onNextAction(nextAction: string){
-var next="next";
-this.filename= "nextActions.json";
-this.nextActions= {"id" : this.id, "nextAction" : nextAction};
-if(nextAction){
-this.webReqService.Store(this.nextActions, this.filename).subscribe((res: any) => {
-    });
 
-}
-
-}
-
-RetrieveActions(){
-  this.filename="nextActions.json";
-  this.webReqService.Retrieve(this.filename).subscribe((res: any) => {
-            this.nextActions= JSON.stringify(res.body);
-          
-    });
+OnCommentButtonClicked(comment: string){
+localStorage.setItem('comment', comment);
 
 }
 

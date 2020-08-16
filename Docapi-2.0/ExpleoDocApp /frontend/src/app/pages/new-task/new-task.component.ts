@@ -20,13 +20,29 @@ export class NewTaskComponent implements OnInit {
 
   listId: string;
   selectedFile : string;
+  id: number=1;
+  docid: any;
+  delId: any;
+  retId:any;
+  deletedID:string;
+  IDfile: string;
   ngOnInit() {
+  this.IDfile="newDocId.json";
+  this.webReqService.Retrieve(this.IDfile).subscribe((res: any) => {
+          var retId= res.body;
+          this.id = parseInt(retId);
+          console.log(this.id);
+
+    });
+
+  
     this.route.params.subscribe(
       (params: Params) => {
         this.listId = params['listId'];
       }
     )
   }
+
 
  
  onFileChanged(event) {
@@ -42,27 +58,39 @@ export class NewTaskComponent implements OnInit {
     .subscribe(event => {
       console.log(event);
     });
-this._snackBar.open("Successfully Uploaded Document", "ok", {
+this._snackBar.open("Successfully Uploaded Document", "Ok", {
       duration: 5000,
     });
   }
  
- Onidclick(){
-  this._snackBar.open("Document id must be an integer number : 0, 15,43, 84 ", "ok", {
-      duration: 5000,
-    });
- }
-onCreateButtonClicked(id: string, name: string, projname: string, sender: string, receiver: string, subject: string, message: string) {
+
+onCreateButtonClicked(name: string, projname: string, sender: string, receiver: string, subject: string, message: string) {
+this.IDfile="newDocId.json";
 let attachname=this.filename;
 
- if(id && name && projname && sender && receiver && subject && message && attachname){
-    this.webReqService.createDoc(id, name, projname, sender, receiver, subject, message, attachname).subscribe((res: HttpResponse<any>) => {
-    if(res.status === 200){
+let stringid= this.id + "";
+
+ if(name && projname && sender && receiver && subject && message && attachname){
+    this.webReqService.createDoc(stringid, name, projname, sender, receiver, subject, message, attachname).subscribe((res: HttpResponse<any>) => {
+    
+      console.log("after:", this.id);
       console.log(res);
       this._snackBar.open("Successfully Created Document", "ok", {
       duration: 5000,
     });
-      this.router.navigate(['/lists']);}
+
+      this.router.navigate(['/lists']);
+    });
+    
+    this.id = this.id +1;
+    stringid= this.id + "";
+    var row = stringid;
+    this.webReqService.Delete(this.IDfile).subscribe((res: any) => {
+         console.log(JSON.stringify(res))
+    });
+     this.webReqService.Store(stringid, row, this.IDfile).subscribe((res: any) => {
+
+
     });
     
   }else{
@@ -70,6 +98,7 @@ let attachname=this.filename;
       duration: 5000,
     });
     }
+    
 }
 
 

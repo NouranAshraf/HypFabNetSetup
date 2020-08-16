@@ -36,6 +36,12 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error starting chaincode: %s", err)
 	}
+	
+	id := "0"
+ 
+   // print string
+   fmt.Println("Before:" , id)
+	
 }
 
 func (t *Chaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
@@ -81,8 +87,8 @@ func (t *Chaincode) InitDoc(stub shim.ChaincodeStubInterface, args []string) pb.
 
 	//   0   1        2           3       4          5        6       7
 	// ID", projname", name,  "sender", "receiver", "subject", "msg", "attachname"
-	if len(args) != 8 {
-		return shim.Error("Incorrect number of arguments. Expecting 8")
+	if len(args) != 7 {
+		return shim.Error("Incorrect number of arguments. Expecting 7")
 	}
 	
 	fmt.Println("- start init Doc")
@@ -108,19 +114,28 @@ func (t *Chaincode) InitDoc(stub shim.ChaincodeStubInterface, args []string) pb.
 	if len(args[6]) <= 0 {
 		return shim.Error("7th argument must be a non-empty string")
 	}
-	if len(args[7]) <= 0 {
-		return shim.Error("8th argument must be a non-empty string")
-	}			
+	
+   
 
-
-	id := args[0]
-	DocName := strings.ToLower(args[1])
-	projname := strings.ToLower(args[2])
-	sender := strings.ToLower(args[3])
-	receiver := strings.ToLower(args[4])
-	subject := strings.ToLower(args[5])
-	msg := strings.ToLower(args[6])			
-	attachname := strings.ToLower(args[7])
+	// convert string to a number
+   i, _ := strconv.Atoi(id)
+ 
+   // add one the the number
+   i = i + 1
+ 
+   // convert number back to string
+   id = strconv.FormatInt(int64(i), 10)
+ 
+   // print string
+   fmt.Println("After :" , id)
+   
+	DocName := strings.ToLower(args[0])
+	projname := strings.ToLower(args[1])
+	sender := strings.ToLower(args[2])
+	receiver := strings.ToLower(args[3])
+	subject := strings.ToLower(args[4])
+	msg := strings.ToLower(args[5])			
+	attachname := strings.ToLower(args[6])
 
 
 

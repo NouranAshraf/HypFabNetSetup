@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TaskViewComponent } from './pages/task-view/task-view.component';
-
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NewTaskComponent } from './pages/new-task/new-task.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
@@ -21,6 +20,8 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { MessageComponent } from './pages/message/message.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatCardModule} from '@angular/material/card';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import {MatCardModule} from '@angular/material/card';
     MatInputModule,
     MatDialogModule,
     MatCardModule,
+    ScrollingModule,
     MatFormFieldModule
   ],
   providers: [

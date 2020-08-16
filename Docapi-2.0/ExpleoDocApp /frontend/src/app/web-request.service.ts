@@ -19,6 +19,7 @@ export class WebRequestService {
   readonly downloadUrl;
   readonly storeUrl;
   readonly retrieveUrl;
+  readonly deleteUrl;
   private requestData;
   private user;
   readonly org;
@@ -40,6 +41,7 @@ export class WebRequestService {
     this.downloadUrl = "http://localhost:4000/download";
     this.storeUrl = "http://localhost:4000/store";
     this.retrieveUrl= "http://localhost:4000/retrieve";
+    this.deleteUrl= "http://localhost:4000/delete";
     this.user="nouran";
     this.org="Sales";
     this.chaincodeName="mydoc";
@@ -144,7 +146,6 @@ DeleteDoc(id: string) {
     let chaincodeName=this.chaincodeName;
     let channelName=this.channelName;
     let fcn = "DeleteDoc";
-    alert(id);
     return this.http.post(`${this.invokeUrl}`, {
       "userName" : userName,
       "orgName" : orgName,
@@ -158,7 +159,7 @@ DeleteDoc(id: string) {
       });
   }
 
-  DocValueHistory(name: string) {
+  DocValueHistory(id: string) {
     let userName=this.user;
     let orgName=this.org;
     let peers=this.peers;
@@ -171,7 +172,7 @@ DeleteDoc(id: string) {
       "peers" : peers,
       "channelName" : channelName,
       "chaincodeName" : chaincodeName,
-      "args" :[name],
+      "args" :[id],
       "fcn" : fcn
     }, {
         observe: 'response'
@@ -197,9 +198,9 @@ DeleteDoc(id: string) {
   }
   
   
-  Store(row : string, filename: string) {
+  Store(id: string,row : string, filename: string) {
     return this.http.post(`${this.storeUrl}`, {
-
+       "id" :  id,
       "row" : row,
       "filename" : filename
     }, {
@@ -209,6 +210,17 @@ DeleteDoc(id: string) {
   
   Retrieve(filename: string) {
    return this.http.post(`${this.retrieveUrl}`, {
+
+      "filename" : filename
+    }, {
+        observe: 'response'
+      });
+  
+  
+  }
+  
+   Delete(filename: string) {
+   return this.http.post(`${this.deleteUrl}`, {
 
       "filename" : filename
     }, {

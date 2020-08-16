@@ -46,20 +46,30 @@ function getErrorMessage(field) {
     return response;
 }
 
-
-
-
-
-
-
 //Download uploaded file from upload folder
 app.post('/download',  function (req, res) {
 let filename = req.body.filename;
 let filepath= path.resolve(__dirname, '..','javascript','uploads', filename)
 console.log(filename);
-
   res.download(filepath, filename);
   console.log("download Successfull");
+})
+
+
+//delete file 
+app.post('/delete',  function (req, res) {
+console.log("======Starting delete====");
+let filename = req.body.filename;
+let filepath= path.resolve(__dirname, '..','javascript',filename )
+if (fs.existsSync(filepath)) {
+ fs.unlinkSync(filename)
+res.send("Successfully deleted file")
+console.log("Successfully deleted file");
+}else{
+res.send("No such file")
+console.log("No such file");
+}
+  
 })
 
 
@@ -91,19 +101,27 @@ console.log("======Starting store====");
 var row = req.body.row;
 console.log('row:', row)
 var filename=req.body.filename;
+var id=req.body.id;
 var data = JSON.stringify(row);
 let filepath= path.resolve(__dirname, '..','javascript',filename )
-
 if (fs.existsSync(filepath)) {
+var content = fs.readFileSync(filename,'utf8');
+console.log(content);
+if(!(content.includes(id))){
 fs.appendFileSync(filename, ",", finished);
 fs.appendFileSync(filename, data, finished);
 res.send("file exists and appended row")
+}else{
+console.log("Record already exists");
+res.send("Record already exists");
+}
 
 }else{
 fs.writeFileSync(filename, "[", finished);
 fs.appendFileSync(filename, data, finished);
 res.send("created file and added row")
 }
+
 function finished(err){
 console.log("all set");
 

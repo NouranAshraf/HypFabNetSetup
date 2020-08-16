@@ -154,7 +154,7 @@ position: absolute;
 
 
 .table table-trapped{
-background: white;
+background: #92a0ce;
 
 }
 
@@ -181,6 +181,7 @@ position: absolute;
 left:20px;
 top: 160px;
 width: 98%;
+overflow: auto;
 }
 
 mat-paginator {
@@ -224,3 +225,30 @@ font-size: 25px;
 }
 
 
+mat-card {
+  height: 300px;
+  margin: 2em;
+  color: white;
+  font-weight:bold;
+  
+}
+
+
+
+.viewport {
+  height: 500px;
+  width: 95%;
+  left: 30px;
+  background: #E6E6FA;
+  top:30px;
+}
+
+.back-button{
+position: absolute;
+right:80px;
+bottom:20px;
+}
+
+.prev{
+color: #6585dd;
+}

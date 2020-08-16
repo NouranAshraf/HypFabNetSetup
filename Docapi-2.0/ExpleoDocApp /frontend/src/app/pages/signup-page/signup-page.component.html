@@ -10,10 +10,15 @@
 
       
   <div class="mat-elevation-z8">   
+       <div *ngIf="!show"> 
+  <div class= "search">
+<input #searchInput (keyup)= "applyFilter($event.target.value)" placeholder="Filter " (keyup)="searchText=true" >
+    <button  class= "clear-btn" (click)="clearSearchField()" (click)="removeSearchField(searchInput.value)" *ngIf="searchText">x
+    </button>
+ </div>  
+  
 
- <div class="search">
-    <input #searchInput (keyup)= "applyFilter($event.target.value)" placeholder="Filter ">
-  </div>  
+     <div *ngIf="!searchText">           
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
   <!--- Note that these columns can be defined in any order.
@@ -88,9 +93,9 @@
        </div>
      </button>
      
-     <button mat-raised-button (click)="onDeleteButtonClicked(data.Record.id)">
+    <button mat-raised-button class="btn btn-primary" (click)="onDocHistoryButtonClicked(data.Record.id)" (click)="show=true" >
        <div class="icon">
-        <i class="fas fa-trash"></i>
+        <i class="fas fa-history"></i>
        </div>
      </button>
      <br>
@@ -102,14 +107,129 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
 </table>
-
-
-
 </div>
- <div *ngIf="!dataSource">
+</div>
+
+<div *ngIf="searchText">
+<div *ngIf="!show">
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+  <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+   <!-- ID Column -->
+  <ng-container matColumnDef="id"> 
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.id}} </td>
+  </ng-container>
+
+  <!-- Client Name Column -->
+  <ng-container matColumnDef="clientname">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Client Name </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.name}} </td>
+  </ng-container>
+
+  <!-- Project Name Column -->
+  <ng-container matColumnDef="projectname">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Project Name </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.projname}} </td>
+  </ng-container>
+
+  <!-- Sender Column -->
+  <ng-container matColumnDef="sender">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Sender </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.sender}} </td>
+  </ng-container>
+  
+    <!-- Receiver Column -->
+  <ng-container matColumnDef="receiver">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Receiver </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.receiver}} </td>
+  </ng-container>
+  
+  
+    <!-- Description Column -->
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.subject}} </td>
+  </ng-container>
+  
+    <!-- Comments Column -->
+  <ng-container matColumnDef="comments">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Comments </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.msg}} </td>
+  </ng-container>
+  
+    <!-- Attachment Column -->
+  <ng-container matColumnDef="attachment">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Attachment </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.attachname}} </td>
+  </ng-container>
+  
+   <!-- Closure Column -->
+  <ng-container matColumnDef="closurereason">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Closure Reason </th>
+    <td mat-cell *matCellDef="let data"> {{data.Record.closurereason}} </td>
+  </ng-container>
+  
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> Actions </th>
+    <td mat-cell *matCellDef="let data">
+
+      <h1 class="closedword" >
+        CLOSED
+      </h1>
+
+    <button class="btn btn-primary" (click)="onDownloadButtonClicked(data.Record.attachname)" >
+       <div class="icon">
+        <i class="fas fa-download"></i>
+       </div>
+     </button>
+     
+    <button mat-raised-button class="btn btn-primary" (click)="onDocHistoryButtonClicked(data.Record.id)" (click)="show=true" >
+       <div class="icon">
+        <i class="fas fa-history"></i>
+       </div>
+     </button>
+     <br>
+
+ </td>
+  </ng-container>
+  
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>
+</div>
+</div>
+</div>
+
+
+  <div *ngIf="!dataSource">
         <h3 class="empty-state-text">There are no archives yet !</h3>
         </div>
-
+        
+        
+     <div *ngIf="!searchText">    
+   <div *ngIf="show">
+      
+ <cdk-virtual-scroll-viewport itemSize="200" class="viewport">
+    <mat-card *cdkVirtualFor="let data of userData">
+      <mat-card-content> <div class="prev">Transaction ID: </div> {{data.TxId}}</mat-card-content>
+      <mat-card-content><div class="prev">IsDeleted: </div>  {{data.IsDelete}}</mat-card-content>
+      <mat-card-content><div class="prev">Timestamp: </div> {{data.Timestamp}}</mat-card-content>
+       <mat-card-content> <div class="prev">Previous Values: </div> ID: {{data.Value.id}}, Client Name: {{data.Value.name}}, Project Name: {{data.Value.projname}}, sender: {{data.Value.sender}}, receiver: {{data.Value.receiver}}, Description: {{data.Value.subject}}, Comments: {{data.Value.msg}}, Attachment: {{data.Value.attachname}}
+       </mat-card-content>
+    </mat-card>
+  </cdk-virtual-scroll-viewport>
+  
+  <div class="back-button">
+      <button class="button is-medium"  (click)="onBackButtonClicked()" >
+      Back
+      </button>
+      </div>  
+        
+      </div>
       </div>
       
       </div>

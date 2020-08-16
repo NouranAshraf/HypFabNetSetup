@@ -8,9 +8,9 @@ import { HttpResponse } from '@angular/common/http';
 import { map } from "rxjs/operators"; 
 import {saveAs} from 'file-saver';
 import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { ViewChild } from '@angular/core';
-import {MatSort} from '@angular/material/sort';
 import {MatDialogRef, MAT_DIALOG_DATA, MatDialog} from  '@angular/material/dialog';
 import { MessageComponent} from 'src/app/pages/message/message.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -32,53 +32,82 @@ export interface PeriodicElement {
   styleUrls: ['./task-view.component.scss'],
     providers: [ MatSnackBar]
 })
-export class TaskViewComponent implements OnInit{
+export class TaskViewComponent implements OnInit {
   
   constructor( private route: ActivatedRoute, private router: Router,private authService: AuthService, private webReqService : WebRequestService, private _snackBar: MatSnackBar) { }
- 
   orgname: string;
   username: string;
   userData:any;
   Sales: string;
   sales: string;
-  search : boolean = false;
+  closurereason: string;
+  searchText : boolean = false;
   filename: string;
   archive: boolean=false;
-  closed : boolean = false;
-  closurereason: string;
+  filterrow: any;
 
   displayedColumns: string[] = ['id','clientname','projectname','attachment','actions'];
-  dataSource;
-  
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+ dataSource = new MatTableDataSource(this.userData);
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  
   ngOnInit() {
+   this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   this.Sales="Sales";
   this.sales="sales";
   this.username=localStorage.getItem('username');
   this.orgname=localStorage.getItem('orgname');
    this.Documents();
-       this.dataSource.sort = this.sort;
-   this.dataSource.paginator = this.paginator;
-
 
   }
   
+
+ applyFilter(filterValue: string){
+
+   this.webReqService.getDocuments().subscribe((res: any) => {
+              this.userData=res.body.result;                
+ for(var i = 0; i < this.userData.length; i++){          
+   if(filterValue){
+   if(res.body.result[i].Record.id.includes(filterValue) || res.body.result[i].Record.name.includes(filterValue) || res.body.result[i].Record.projname.includes(filterValue) || res.body.result[i].Record.attachname.includes(filterValue)){
+     this.filterrow= res.body.result[i];
+     this.filename="searchItems.json";
+  this.webReqService.Store(res.body.result[i].Record.id, this.filterrow, this.filename).subscribe((res: any) => {
+    });
   
-  applyFilter(filterValue: string){
-  filterValue=filterValue.trim();
-  filterValue=filterValue.toLowerCase();
-  this.dataSource.filter=filterValue;
+  this.webReqService.Retrieve(this.filename).subscribe((res: any) => {
+          this.dataSource= res.body;
+          console.log(JSON.stringify(this.dataSource));
+    });
+
+  } // second if end 
+}// first if end 
+
+ } //for loop end  
+ 
+});
+
+  }
+
+
+  removeSearchField(filterValue: string) {
+  this.filename="searchItems.json";  
+  this.webReqService.Delete(this.filename).subscribe((res: any) => {
+         console.log(JSON.stringify(res))
+    });
+  }
   
+   clearSearchField() {
+   location.reload();
   }
 
 onArchivedButtonClicked(id:string, closurereason:string) {
-this.closed=true;
  this.webReqService.sharedData=closurereason; 
  this.closurereason=closurereason;
  if(closurereason){
     this.getRecord(this.webReqService.dataRow);
+    this.onDeleteButtonClicked(id);
     this.router.navigate(['/lists/signup']);
     }else{
     this._snackBar.open("Missing Closure Reason", "Ok", {
@@ -104,10 +133,9 @@ getRecord(row : any){
   "closurereason": this.closurereason
 };
      let newrow= Object.assign(row.Record, closure);
-     alert(JSON.stringify(newrow));
      this.filename="Archived.json";
      if(this.closurereason){
-     this.webReqService.Store(row, this.filename).subscribe((res: any) => {
+     this.webReqService.Store(this.userData.result[0].Record.id,row, this.filename).subscribe((res: any) => {
               this.userData=res;
 
     });
@@ -129,28 +157,31 @@ getRecord(row : any){
      this.router.navigate(['/lists/']);
     });
   }
-  
-   onLogoutButtonClicked() {
-    this.authService.logout();
-   }
 
-   Documents() { 
-    this.webReqService.getDocuments().subscribe((res: any) => {
-              this.userData=res.body.result;
-              this.dataSource= new MatTableDataSource<PeriodicElement>(res.body.result);
-
-
-});
-                                
-  }
-
-onDownloadButtonClicked(name:string) {
+  onDownloadButtonClicked(name:string) {
            this.webReqService.downloadFile(name)
         .subscribe(
             data => saveAs(data, name),
             error => console.error(error)
         );
-}
+  }
 
+  
+   onLogoutButtonClicked() {
+    this.authService.logout();
+   }
+
+
+
+   Documents() { 
+    this.webReqService.getDocuments().subscribe((res: any) => {
+              this.userData=res.body;
+              this.dataSource= new MatTableDataSource(res.body.result);
+
+
+              
+});
+                                
+  }
 
 }
